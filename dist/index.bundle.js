@@ -68,17 +68,28 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+
+let b, s;
 class Brush {
     constructor(canvas = null, type = 'circle', color = '#000', size = 10, alpha = 1) {
         this.canvas = canvas;
-        this._init();
+        this.color = color;
+        this.size = size;
+        this.alpha = alpha;
+        b = this.canvas.freeDrawingBrush;
+        b.color = this.color;
+        b.width = this.size;
+        b.alpha = this.alpha;
     }
 
-    _init() {
-        this.canvas.free;
+    colorChange(color = '#000') {
+        b.color = color;
+    }
+    sizeChange(size = 7) {
+        b.width = size;
     }
 }
-/* unused harmony export default */
+/* harmony export (immutable) */ __webpack_exports__["a"] = Brush;
 
 
 /***/ }),
@@ -92,21 +103,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-class index {
+let index;
+index = function () {
+    // console.log("A");
+    // let canvas = document.getElementById('drawStage');
+    // this.sketchBook = new SketchBook(canvas, 500, 500, 1);
+    // this.addChild(this.sketchBook);
+};
+
+let s = new __WEBPACK_IMPORTED_MODULE_1__sketchBook_SketchBook__["a" /* default */]('drawStage');
+
+/*export default class index {
     constructor() {
 
         this._init();
+
     }
 
     _init() {
+        console.log("A")
         let canvas = document.getElementById('drawStage');
-        this.sketchBook = new __WEBPACK_IMPORTED_MODULE_1__sketchBook_SketchBook__["a" /* default */](canvas, 500, 500, 1);
-        this.addChild(this.sketchBook);
+        this.sketchBook = new SketchBook(canvas, 500, 500, 1);
+        // this.addChild(this.sketchBook);
     }
 
-}
-/* harmony export (immutable) */ __webpack_exports__["default"] = index;
 
+}*/
 /*
 jrBrush = function() {
     let $ = function(id){return document.getElementById(id)};
@@ -293,25 +315,107 @@ drawingShadowOffset.onchange = function() {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__module_Brush__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_GameConfig__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__module_ClearCanvas__ = __webpack_require__(4);
 
-let _canvas;
+
+
+let _id, _canvas;
+let _colorArr = ['#ff00c8', '#59ff00', '#ffa200', '#0073ff'];
+let _sizeArr = [5, 7, 10, 20, 30];
 class SketchBook {
-    constructor(canvas, width, height, layer = 1) {
-        _canvas = canvas;
-        console.log(_canvas);
+    constructor(id, width, height, layer = 1) {
+        _id = id;
+        _canvas = new fabric.Canvas(_id, {
+            isDrawingMode: true
+        });
+        this.defaultTool = new __WEBPACK_IMPORTED_MODULE_0__module_Brush__["a" /* default */](_canvas, 'circle', '#ffcc00', 10, 0.3);
+        __WEBPACK_IMPORTED_MODULE_1__data_GameConfig__["a" /* default */].CURRENT_TOOL = this.defaultTool;
 
         this._init();
     }
 
     _init() {
-        // this.defaultTool = new Brush(this.canvas);
-        this.canvas = new fabric.Canvas(_canvas, {
-            isDrawingMode: true
-        });
+        let $ = function (id) {
+            return document.getElementById(id);
+        };
+        let drawingModeEl = $('drawing-mode'),
+            drawingOptionsEl = $('drawing-mode-options'),
+            drawingColorEl = $('drawing-color'),
+            drawingLineWidthEl = $('drawing-line-width'),
+            clearEl = $('clear-canvas');
+
+        drawingModeEl.onclick = () => {
+            _canvas.isDrawingMode = !_canvas.isDrawingMode;
+            if (_canvas.isDrawingMode) {
+                drawingModeEl.innerHTML = 'Object-Move';
+                drawingOptionsEl.style.display = '';
+                drawingColorEl.style.display = '';
+                drawingLineWidthEl.style.display = '';
+            } else {
+                drawingModeEl.innerHTML = 'Enter drawing mode';
+                drawingOptionsEl.style.display = 'none';
+                drawingColorEl.style.display = 'none';
+                drawingLineWidthEl.style.display = 'none';
+            }
+        };
+        drawingColorEl.onclick = () => {
+            // this.defaultTool.colorChange();
+            let n = parseInt(Math.random() * _colorArr.length);
+            let c = _colorArr[n];
+            console.log(c);
+            __WEBPACK_IMPORTED_MODULE_1__data_GameConfig__["a" /* default */].CURRENT_TOOL.colorChange(c);
+        };
+
+        drawingLineWidthEl.onclick = () => {
+            let n = parseInt(Math.random() * _sizeArr.length);
+            let c = _sizeArr[n];
+            console.log(c);
+            __WEBPACK_IMPORTED_MODULE_1__data_GameConfig__["a" /* default */].CURRENT_TOOL.sizeChange(c);
+        };
+        clearEl.onclick = () => {
+            _canvas.clear();
+        };
+    }
+
+    _clearCanvas(canvas) {
+        let a = new __WEBPACK_IMPORTED_MODULE_2__module_ClearCanvas__["a" /* default */](canvas);
     }
 
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = SketchBook;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+let _tool = null;
+
+class GameConfig {
+    static get CURRENT_TOOL() {
+        return _tool;
+    }
+    static set CURRENT_TOOL(obj) {
+        _tool = obj;
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = GameConfig;
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+class ClearCanvas {
+    constructor(canvas) {
+        canvas.clear();
+    }
+
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = ClearCanvas;
 
 
 /***/ })
