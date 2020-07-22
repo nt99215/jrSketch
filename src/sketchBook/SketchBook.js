@@ -1,6 +1,8 @@
+import {fabric} from 'fabric';
 import Brush from "../module/Brush";
 import GameConfig from "../data/GameConfig";
 import ClearCanvas from "../module/ClearCanvas";
+
 let _id, _canvas;
 let _colorArr = ['#ff00c8', '#59ff00', '#ffa200', '#0073ff'];
 let _sizeArr = [5,7,10,20,30];
