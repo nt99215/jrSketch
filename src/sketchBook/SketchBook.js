@@ -44,7 +44,8 @@ export default class SketchBook {
             clearEl = $('clear-canvas');
 
         brush.onclick =()=> {
-
+            _canvas.isDrawingMode = true;
+            GameConfig.IS_LINE_DRAWING = false;
             _canvas.freeDrawingBrush = new fabric.PencilBrush(_canvas);
             _canvas.freeDrawingBrush.color = '#ff4400';
             _canvas.freeDrawingBrush.width = 40;
@@ -53,6 +54,8 @@ export default class SketchBook {
         }
 
         airBrush.onclick =()=> {
+            _canvas.isDrawingMode = true;
+            GameConfig.IS_LINE_DRAWING = false;
             _canvas.freeDrawingBrush = new fabric.SprayBrush(_canvas);
             _canvas.freeDrawingBrush.color = '#ffcc00';
             _canvas.freeDrawingBrush.width = 40;
@@ -64,6 +67,8 @@ export default class SketchBook {
         }
 
         crayon.onclick =()=> {
+            _canvas.isDrawingMode = true;
+            GameConfig.IS_LINE_DRAWING = false;
             _canvas.freeDrawingBrush = new fabric.SprayBrush(_canvas);
             _canvas.freeDrawingBrush.color = '#d000ff';
             _canvas.freeDrawingBrush.width = 20;
@@ -76,7 +81,48 @@ export default class SketchBook {
         }
 
         line.onclick =()=> {
-            _canvas.freeDrawingBrush = new fabric.Line(_canvas);
+            // _canvas.freeDrawingBrush = new fabric.Line(_canvas);
+            _canvas.isDrawingMode = false;
+            _canvas.selection = false;
+            GameConfig.IS_LINE_DRAWING = true;
+            let isDown = false;
+
+            function drawLine() {
+                let line;
+                _canvas.on('mouse:down', function (o) {
+                    if (GameConfig.IS_LINE_DRAWING) {
+                        // _canvas.selection = false;
+                        isDown = true;
+                        let pointer = _canvas.getPointer(o.e);
+                        let points = [pointer.x, pointer.y, pointer.x, pointer.y];
+
+                        line = new fabric.Line(points, {
+                            strokeWidth: 7,
+                            fill: '#b65858',
+                            stroke: '#931717',
+                            originX: 'center',
+                            originY: 'center'
+                        });
+                        _canvas.add(line);
+                    }
+                });
+
+                _canvas.on('mouse:move', function (o) {
+                    if (!isDown)
+                        return;
+                    if (GameConfig.IS_LINE_DRAWING) {
+                        let pointer = _canvas.getPointer(o.e);
+                        line.set({x2: pointer.x, y2: pointer.y});
+                        _canvas.renderAll();
+                    }
+                });
+
+                _canvas.on('mouse:up', function (o) {
+                    isDown = false;
+                });
+            }
+
+            drawLine();
         }
 
         screenTone.onclick =()=> {
@@ -88,6 +134,9 @@ export default class SketchBook {
         }
 
         eraser.onclick =()=> {
+            _canvas.selection = false;
+            _canvas.isDrawingMode = true;
+            GameConfig.IS_LINE_DRAWING = false;
             _canvas.freeDrawingBrush = new fabric.PencilBrush(_canvas);
             _canvas.freeDrawingBrush.color = '#ffffff';
             _canvas.freeDrawingBrush.width = 50;

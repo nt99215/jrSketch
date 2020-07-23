@@ -70,6 +70,7 @@
 "use strict";
 let _tool = null;
 let _isDrawingMode = false;
+let _isLineDrawing = false;
 
 class GameConfig {
     static get CURRENT_TOOL() {
@@ -84,6 +85,13 @@ class GameConfig {
     }
     static set IS_DRAWING_MODE(bool) {
         _isDrawingMode = bool;
+    }
+
+    static get IS_LINE_DRAWING() {
+        return _isLineDrawing;
+    }
+    static set IS_LINE_DRAWING(bool) {
+        _isLineDrawing = bool;
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = GameConfig;
@@ -396,7 +404,8 @@ class SketchBook {
             clearEl = $('clear-canvas');
 
         brush.onclick = () => {
-
+            _canvas.isDrawingMode = true;
+            __WEBPACK_IMPORTED_MODULE_2__data_GameConfig__["a" /* default */].IS_LINE_DRAWING = false;
             _canvas.freeDrawingBrush = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].PencilBrush(_canvas);
             _canvas.freeDrawingBrush.color = '#ff4400';
             _canvas.freeDrawingBrush.width = 40;
@@ -405,6 +414,8 @@ class SketchBook {
         };
 
         airBrush.onclick = () => {
+            _canvas.isDrawingMode = true;
+            __WEBPACK_IMPORTED_MODULE_2__data_GameConfig__["a" /* default */].IS_LINE_DRAWING = false;
             _canvas.freeDrawingBrush = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].SprayBrush(_canvas);
             _canvas.freeDrawingBrush.color = '#ffcc00';
             _canvas.freeDrawingBrush.width = 40;
@@ -416,6 +427,8 @@ class SketchBook {
         };
 
         crayon.onclick = () => {
+            _canvas.isDrawingMode = true;
+            __WEBPACK_IMPORTED_MODULE_2__data_GameConfig__["a" /* default */].IS_LINE_DRAWING = false;
             _canvas.freeDrawingBrush = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].SprayBrush(_canvas);
             _canvas.freeDrawingBrush.color = '#d000ff';
             _canvas.freeDrawingBrush.width = 20;
@@ -427,7 +440,47 @@ class SketchBook {
         };
 
         line.onclick = () => {
-            _canvas.freeDrawingBrush = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].Line(_canvas);
+            // _canvas.freeDrawingBrush = new fabric.Line(_canvas);
+            _canvas.isDrawingMode = false;
+            _canvas.selection = false;
+            __WEBPACK_IMPORTED_MODULE_2__data_GameConfig__["a" /* default */].IS_LINE_DRAWING = true;
+            let isDown = false;
+
+            function drawLine() {
+                let line;
+                _canvas.on('mouse:down', function (o) {
+                    if (__WEBPACK_IMPORTED_MODULE_2__data_GameConfig__["a" /* default */].IS_LINE_DRAWING) {
+                        // _canvas.selection = false;
+                        isDown = true;
+                        let pointer = _canvas.getPointer(o.e);
+                        let points = [pointer.x, pointer.y, pointer.x, pointer.y];
+
+                        line = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].Line(points, {
+                            strokeWidth: 7,
+                            fill: '#b65858',
+                            stroke: '#931717',
+                            originX: 'center',
+                            originY: 'center'
+                        });
+                        _canvas.add(line);
+                    }
+                });
+
+                _canvas.on('mouse:move', function (o) {
+                    if (!isDown) return;
+                    if (__WEBPACK_IMPORTED_MODULE_2__data_GameConfig__["a" /* default */].IS_LINE_DRAWING) {
+                        let pointer = _canvas.getPointer(o.e);
+                        line.set({ x2: pointer.x, y2: pointer.y });
+                        _canvas.renderAll();
+                    }
+                });
+
+                _canvas.on('mouse:up', function (o) {
+                    isDown = false;
+                });
+            }
+
+            drawLine();
         };
 
         screenTone.onclick = () => {
@@ -438,6 +491,9 @@ class SketchBook {
         };
 
         eraser.onclick = () => {
+            _canvas.selection = false;
+            _canvas.isDrawingMode = true;
+            __WEBPACK_IMPORTED_MODULE_2__data_GameConfig__["a" /* default */].IS_LINE_DRAWING = false;
             _canvas.freeDrawingBrush = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].PencilBrush(_canvas);
             _canvas.freeDrawingBrush.color = '#ffffff';
             _canvas.freeDrawingBrush.width = 50;
