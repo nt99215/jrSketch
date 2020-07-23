@@ -51,10 +51,6 @@ jrBrush = function() {
     canvas.freeDrawingBrush.color = "#308959"
     console.log(canvas.freeDrawingBrush);
 
-    setTimeout(()=> {
-        // canvas.freeDrawingBrush.width = 10;
-        canvas.freeDrawingBrush.color = "#765730"
-    }, 2000)
    /* canvas.freeDrawingBrush.shadow = new fabric.Shadow({
         // blur: parseInt(drawingShadowWidth.value, 10) || 0,
         offsetX: 0,

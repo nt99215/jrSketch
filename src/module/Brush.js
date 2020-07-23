@@ -1,3 +1,4 @@
+import GameConfig from "../data/GameConfig";
 
 let b, s;
 export default class Brush {
@@ -10,6 +11,15 @@ export default class Brush {
         b.color = this.color;
         b.width = this.size;
         b.alpha = this.alpha;
+        /**
+         * round, butt, square
+         * @type {string}
+         */
+        b.strokeLineCap = 'square';
+        b.strokeLineJoin = 'square';
+        // b.strokeMiterLimit = 200;
+
+
     }
 
     colorChange(color = '#000') {

@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -68,6 +68,34 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+let _tool = null;
+let _isDrawingMode = false;
+
+class GameConfig {
+    static get CURRENT_TOOL() {
+        return _tool;
+    }
+    static set CURRENT_TOOL(obj) {
+        _tool = obj;
+    }
+
+    static get IS_DRAWING_MODE() {
+        return _isDrawingMode;
+    }
+    static set IS_DRAWING_MODE(bool) {
+        _isDrawingMode = bool;
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = GameConfig;
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__ = __webpack_require__(0);
+
 
 let b, s;
 class Brush {
@@ -80,6 +108,14 @@ class Brush {
         b.color = this.color;
         b.width = this.size;
         b.alpha = this.alpha;
+        /**
+         * round, butt, square
+         * @type {string}
+         */
+        b.strokeLineCap = 'square';
+        b.strokeLineJoin = 'square';
+        // b.strokeMiterLimit = 200;
+
     }
 
     colorChange(color = '#000') {
@@ -93,13 +129,13 @@ class Brush {
 
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__module_Brush__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sketchBook_SketchBook__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__module_Brush__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sketchBook_SketchBook__ = __webpack_require__(3);
 
 
 
@@ -152,10 +188,6 @@ jrBrush = function() {
     canvas.freeDrawingBrush.color = "#308959"
     console.log(canvas.freeDrawingBrush);
 
-    setTimeout(()=> {
-        // canvas.freeDrawingBrush.width = 10;
-        canvas.freeDrawingBrush.color = "#765730"
-    }, 2000)
    /* canvas.freeDrawingBrush.shadow = new fabric.Shadow({
         // blur: parseInt(drawingShadowWidth.value, 10) || 0,
         offsetX: 0,
@@ -310,21 +342,23 @@ drawingShadowOffset.onchange = function() {
 // jrBrush();
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_fabric__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_fabric__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_fabric___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_fabric__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__module_Brush__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__data_GameConfig__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__module_Brush__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__data_GameConfig__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__module_ClearCanvas__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ui_MainMenu__ = __webpack_require__(14);
 
 
 
 
 
-let _id, _canvas;
+
+let _id, _id2, _canvas, _menuCanvas;
 let _colorArr = ['#ff00c8', '#59ff00', '#ffa200', '#0073ff'];
 let _sizeArr = [5, 7, 10, 20, 30];
 class SketchBook {
@@ -333,21 +367,77 @@ class SketchBook {
         _canvas = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].Canvas(_id, {
             isDrawingMode: true
         });
-        this.defaultTool = new __WEBPACK_IMPORTED_MODULE_1__module_Brush__["a" /* default */](_canvas, 'circle', '#ffcc00', 10, 0.3);
+        this.defaultTool = new __WEBPACK_IMPORTED_MODULE_1__module_Brush__["a" /* default */](_canvas, 'circle', '#ffcc00', 30, 0.3);
         __WEBPACK_IMPORTED_MODULE_2__data_GameConfig__["a" /* default */].CURRENT_TOOL = this.defaultTool;
 
         this._init();
     }
 
+    _aaa() {}
     _init() {
+
         let $ = function (id) {
             return document.getElementById(id);
         };
-        let drawingModeEl = $('drawing-mode'),
+        let brush = $('brush'),
+            airBrush = $('airBrush'),
+            crayon = $('crayon'),
+            fill = $('fill'),
+            line = $('line'),
+            screenTone = $('screenTone'),
+            eraser = $('eraser'),
+            text = $('text'),
+            zoom = $('zoom'),
+            move = $('move'),
+            drawingModeEl = $('drawing-mode'),
             drawingOptionsEl = $('drawing-mode-options'),
             drawingColorEl = $('drawing-color'),
             drawingLineWidthEl = $('drawing-line-width'),
             clearEl = $('clear-canvas');
+
+        brush.onclick = () => {
+
+            _canvas.freeDrawingBrush = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].PencilBrush(_canvas);
+            _canvas.freeDrawingBrush.color = '#ff4400';
+            _canvas.freeDrawingBrush.width = 40;
+            _canvas.freeDrawingBrush.strokeLineCap = 'round';
+            _canvas.freeDrawingBrush.strokeLineJoin = 'round';
+        };
+
+        airBrush.onclick = () => {
+            _canvas.freeDrawingBrush = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].SprayBrush(_canvas);
+            _canvas.freeDrawingBrush.color = '#ffcc00';
+            _canvas.freeDrawingBrush.width = 40;
+            _canvas.freeDrawingBrush.density = 7;
+            _canvas.freeDrawingBrush.dotWidth = 1;
+            _canvas.freeDrawingBrush.dotWidthVariance = 1;
+            _canvas.freeDrawingBrush.randomOpacity = false;
+            _canvas.freeDrawingBrush.optimizeOverlapping = true;
+        };
+
+        crayon.onclick = () => {
+            _canvas.freeDrawingBrush = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].SprayBrush(_canvas);
+            _canvas.freeDrawingBrush.color = '#d000ff';
+            _canvas.freeDrawingBrush.width = 20;
+            _canvas.freeDrawingBrush.density = 12;
+            _canvas.freeDrawingBrush.dotWidth = 2;
+            _canvas.freeDrawingBrush.dotWidthVariance = 2;
+            _canvas.freeDrawingBrush.randomOpacity = false;
+            _canvas.freeDrawingBrush.optimizeOverlapping = true;
+        };
+
+        eraser.onclick = () => {
+            _canvas.freeDrawingBrush = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].PencilBrush(_canvas);
+            _canvas.freeDrawingBrush.color = '#ffffff';
+            _canvas.freeDrawingBrush.width = 50;
+            _canvas.freeDrawingBrush.strokeLineCap = 'round';
+            _canvas.freeDrawingBrush.strokeLineJoin = 'round';
+        };
+
+        move.onclick = () => {
+            _canvas.isDrawingMode = !_canvas.isDrawingMode;
+            if (_canvas.isDrawingMode) move.innerHTML = 'move';else move.innerHTML = 'draw';
+        };
 
         drawingModeEl.onclick = () => {
             _canvas.isDrawingMode = !_canvas.isDrawingMode;
@@ -391,7 +481,7 @@ class SketchBook {
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {/* build: `node build.js modules=ALL exclude=gestures,accessors requirejs minifier=uglifyjs` */
@@ -417,7 +507,7 @@ if (typeof document !== 'undefined' && typeof window !== 'undefined') {
 }
 else {
   // assume we're running under node.js when document/window are not present
-  var jsdom = __webpack_require__(9);
+  var jsdom = __webpack_require__(10);
   var virtualWindow = new jsdom.JSDOM(
     decodeURIComponent('%3C!DOCTYPE%20html%3E%3Chtml%3E%3Chead%3E%3C%2Fhead%3E%3Cbody%3E%3C%2Fbody%3E%3C%2Fhtml%3E'),
     {
@@ -427,8 +517,8 @@ else {
       resources: 'usable'
     }).window;
   fabric.document = virtualWindow.document;
-  fabric.jsdomImplForWrapper = __webpack_require__(10).implForWrapper;
-  fabric.nodeCanvas = __webpack_require__(11).Canvas;
+  fabric.jsdomImplForWrapper = __webpack_require__(11).implForWrapper;
+  fabric.nodeCanvas = __webpack_require__(12).Canvas;
   fabric.window = virtualWindow;
   DOMParser = fabric.window.DOMParser;
 }
@@ -30115,10 +30205,10 @@ fabric.util.object.extend(fabric.IText.prototype, /** @lends fabric.IText.protot
 })( true ? exports : this);
 
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5).Buffer))
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30132,9 +30222,9 @@ fabric.util.object.extend(fabric.IText.prototype, /** @lends fabric.IText.protot
 
 
 
-var base64 = __webpack_require__(6)
-var ieee754 = __webpack_require__(7)
-var isArray = __webpack_require__(8)
+var base64 = __webpack_require__(7)
+var ieee754 = __webpack_require__(8)
+var isArray = __webpack_require__(9)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -31912,10 +32002,10 @@ function isnan (val) {
   return val !== val // eslint-disable-line no-self-compare
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports) {
 
 var g;
@@ -31942,7 +32032,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32101,7 +32191,7 @@ function fromByteArray (uint8) {
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -32191,7 +32281,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -32200,12 +32290,6 @@ module.exports = Array.isArray || function (arr) {
   return toString.call(arr) == '[object Array]';
 };
 
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-/* (ignored) */
 
 /***/ }),
 /* 10 */
@@ -32221,21 +32305,9 @@ module.exports = Array.isArray || function (arr) {
 
 /***/ }),
 /* 12 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-let _tool = null;
-
-class GameConfig {
-    static get CURRENT_TOOL() {
-        return _tool;
-    }
-    static set CURRENT_TOOL(obj) {
-        _tool = obj;
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = GameConfig;
-
+/* (ignored) */
 
 /***/ }),
 /* 13 */
@@ -32249,6 +32321,97 @@ class ClearCanvas {
 
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = ClearCanvas;
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__ = __webpack_require__(0);
+
+
+const maxMenu = 10;
+const menuText = [{ kor: '브러시', eng: 'brush' }, { kor: '에어브러시', eng: 'airBrush' }, { kor: '크레용', eng: 'crayon' }, { kor: '색칠하기', eng: 'fill' }, { kor: '선긋기', eng: 'line' }, { kor: '스크린톤', eng: 'screenTone' }, { kor: '지우개', eng: 'eraser' }, { kor: '텍스트', eng: 'text' }, { kor: '확대/축소', eng: 'zoom' }, { kor: '이동', eng: 'move' }];
+class MainMenu {
+    constructor(drawCanvas, menuCanvas) {
+        this.drawCanvas = drawCanvas;
+        this.menuCanvas = menuCanvas;
+        console.log(drawCanvas);
+        console.log(menuCanvas);
+        this._init();
+    }
+
+    _init() {
+        let circle = new fabric.Circle({
+            radius: 50,
+            fill: '#3e3c39',
+            originX: 'center',
+            originY: 'center',
+            selectable: false,
+            left: 400,
+            top: 300
+        });
+
+        for (let i = 0; i < maxMenu; i++) {
+            let rect = new fabric.Rect({
+                width: 80, height: 30,
+                left: 20, top: 20 + i * 37,
+                fill: '#8d8782',
+                selectable: false
+            });
+
+            let str = menuText[i].eng;
+            let text = new fabric.Text(str, {
+                fontSize: 15,
+                originX: 'center',
+                originY: 'center',
+                left: 60, top: 34 + i * 37,
+                selectable: false
+            });
+
+            /* let group = new fabric.Group([ rect, text ], {
+                 // left: 20, top: 120 + (i * 50),
+             });*/
+
+            this.menuCanvas.add(rect);
+            this.menuCanvas.add(text);
+            text.on('mousedown', this.select);
+            // text.on('mouseover',  this.selectOver);
+        }
+
+        /*this.canvas.on('mouse:wheel', function(opt) {
+            let delta = opt.e.deltaY;
+            let zoom = this.canvas.getZoom();
+            zoom *= 0.999 ** delta;
+            if (zoom > 20) zoom = 20;
+            if (zoom < 0.01) zoom = 0.01;
+            this.canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+            opt.e.preventDefault();
+            opt.e.stopPropagation();
+        });*/
+    }
+
+    selectOver(e) {
+        console.log("S : ", e.target.text);
+        __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__["a" /* default */].IS_DRAWING_MODE = false;
+    }
+
+    select(e) {
+        console.log("S : ", e.target.text);
+        // console.log(e.currentTarget.num)
+        // GameConfig.IS_DRAWING_MODE = true;
+        // this.drawCanvas.isDrawingMode = !this.drawCanvas.isDrawingMode
+        console.log(this.drawCanvas);
+        //
+    }
+
+    disable() {}
+
+    enable() {}
+
+}
+/* unused harmony export default */
 
 
 /***/ })
