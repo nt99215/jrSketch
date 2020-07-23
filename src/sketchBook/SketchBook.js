@@ -75,6 +75,18 @@ export default class SketchBook {
 
         }
 
+        line.onclick =()=> {
+            _canvas.freeDrawingBrush = new fabric.Line(_canvas);
+        }
+
+        screenTone.onclick =()=> {
+
+            // _canvas.freeDrawingBrush = new fabric.PatternBrush(_canvas);
+            _canvas.freeDrawingBrush = this._makePattern();
+            // this._makePattern();
+
+        }
+
         eraser.onclick =()=> {
             _canvas.freeDrawingBrush = new fabric.PencilBrush(_canvas);
             _canvas.freeDrawingBrush.color = '#ffffff';
@@ -123,6 +135,36 @@ export default class SketchBook {
             _canvas.clear()
         };
 
+    }
+
+
+    _makePattern() {
+        let diamondPatternBrush = new fabric.PatternBrush(_canvas);
+        console.log('aaa');
+        diamondPatternBrush.getPatternSrc = function() {
+            console.log(diamondPatternBrush);
+            console.log('bbb');
+
+            let squareWidth = 10, squareDistance = 5;
+            let patternCanvas = fabric.document.createElement('canvas');
+            let rect = new fabric.Rect({
+                width: squareWidth,
+                height: 10,
+                angle: 45,
+                fill: "rgba(0,136,255,0.85)"
+            });
+
+            let canvasWidth = rect.getBoundingRect().width;
+
+            patternCanvas.width = patternCanvas.height = canvasWidth + squareDistance;
+            rect.set({ left: canvasWidth / 2, top: canvasWidth / 2 });
+
+            let ctx = patternCanvas.getContext('2d');
+            rect.render(ctx);
+
+            console.log(patternCanvas);
+            return patternCanvas;
+        };
     }
 
     _clearCanvas(canvas) {

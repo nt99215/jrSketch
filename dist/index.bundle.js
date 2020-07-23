@@ -426,6 +426,17 @@ class SketchBook {
             _canvas.freeDrawingBrush.optimizeOverlapping = true;
         };
 
+        line.onclick = () => {
+            _canvas.freeDrawingBrush = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].Line(_canvas);
+        };
+
+        screenTone.onclick = () => {
+
+            // _canvas.freeDrawingBrush = new fabric.PatternBrush(_canvas);
+            _canvas.freeDrawingBrush = this._makePattern();
+            // this._makePattern();
+        };
+
         eraser.onclick = () => {
             _canvas.freeDrawingBrush = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].PencilBrush(_canvas);
             _canvas.freeDrawingBrush.color = '#ffffff';
@@ -469,6 +480,36 @@ class SketchBook {
         };
         clearEl.onclick = () => {
             _canvas.clear();
+        };
+    }
+
+    _makePattern() {
+        let diamondPatternBrush = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].PatternBrush(_canvas);
+        console.log('aaa');
+        diamondPatternBrush.getPatternSrc = function () {
+            console.log(diamondPatternBrush);
+            console.log('bbb');
+
+            let squareWidth = 10,
+                squareDistance = 5;
+            let patternCanvas = __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].document.createElement('canvas');
+            let rect = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].Rect({
+                width: squareWidth,
+                height: 10,
+                angle: 45,
+                fill: "rgba(0,136,255,0.85)"
+            });
+
+            let canvasWidth = rect.getBoundingRect().width;
+
+            patternCanvas.width = patternCanvas.height = canvasWidth + squareDistance;
+            rect.set({ left: canvasWidth / 2, top: canvasWidth / 2 });
+
+            let ctx = patternCanvas.getContext('2d');
+            rect.render(ctx);
+
+            console.log(patternCanvas);
+            return patternCanvas;
         };
     }
 
