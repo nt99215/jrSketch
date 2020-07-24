@@ -2,8 +2,8 @@ import GameConfig from "../data/GameConfig";
 import {fabric} from "fabric";
 
 let b, _canvas;
-export default class Brush {
-    constructor(canvas = null, type='circle', color = '#ff4400', size = 30, alpha = 1,
+export default class Eraser {
+    constructor(canvas = null, type='circle', color = '#fff', size = 30, alpha = 1,
                 strokeLineCap = 'round', strokeLineJoin = 'round') {
         // this.canvas = canvas;
         // this.color = color;
@@ -30,7 +30,7 @@ export default class Brush {
         _canvas = canvas;
         _canvas.isDrawingMode = true;
         _canvas.freeDrawingBrush = new fabric.PencilBrush(_canvas);
-        _canvas.freeDrawingBrush.color = '#ff4400';
+        _canvas.freeDrawingBrush.color = '#fff';
         _canvas.freeDrawingBrush.width = 40;
         _canvas.freeDrawingBrush.strokeLineCap = 'round';
         _canvas.freeDrawingBrush.strokeLineJoin = 'round';

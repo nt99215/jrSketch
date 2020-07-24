@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -99,486 +99,6 @@ class GameConfig {
 
 /***/ }),
 /* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__ = __webpack_require__(0);
-
-
-let b, s;
-class Brush {
-    constructor(canvas = null, type = 'circle', color = '#000', size = 10, alpha = 1) {
-        this.canvas = canvas;
-        this.color = color;
-        this.size = size;
-        this.alpha = alpha;
-        b = this.canvas.freeDrawingBrush;
-        b.color = this.color;
-        b.width = this.size;
-        b.alpha = this.alpha;
-        /**
-         * round, butt, square
-         * @type {string}
-         */
-        b.strokeLineCap = 'square';
-        b.strokeLineJoin = 'square';
-        // b.strokeMiterLimit = 200;
-
-    }
-
-    colorChange(color = '#000') {
-        b.color = color;
-    }
-    sizeChange(size = 7) {
-        b.width = size;
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Brush;
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__module_Brush__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sketchBook_SketchBook__ = __webpack_require__(3);
-
-
-
-let index;
-index = function () {
-    // console.log("A");
-    // let canvas = document.getElementById('drawStage');
-    // this.sketchBook = new SketchBook(canvas, 500, 500, 1);
-    // this.addChild(this.sketchBook);
-};
-
-let s = new __WEBPACK_IMPORTED_MODULE_1__sketchBook_SketchBook__["a" /* default */]('drawStage');
-
-/*export default class index {
-    constructor() {
-
-        this._init();
-
-    }
-
-    _init() {
-        console.log("A")
-        let canvas = document.getElementById('drawStage');
-        this.sketchBook = new SketchBook(canvas, 500, 500, 1);
-        // this.addChild(this.sketchBook);
-    }
-
-
-}*/
-/*
-jrBrush = function() {
-    let $ = function(id){return document.getElementById(id)};
-
-    let canvas = this.__canvas = new fabric.Canvas('drawStage', {
-        isDrawingMode: true
-    });
-
-    fabric.Object.prototype.transparentCorners = false;
-
-    let drawingModeEl = $('drawing-mode'),
-        drawingOptionsEl = $('drawing-mode-options'),
-        drawingColorEl = $('drawing-color'),
-        drawingLineWidthEl = $('drawing-line-width'),
-        clearEl = $('clear-canvas');
-
-    // canvas.freeDrawingBrush.color = drawingColorEl.value;
-    // canvas.freeDrawingBrush.color = (35,175,48);
-    // canvas.freeDrawingBrush.width = parseInt(drawingLineWidthEl.value, 10) || 1;
-    canvas.freeDrawingBrush.width = 20;
-    canvas.freeDrawingBrush.color = "#308959"
-    console.log(canvas.freeDrawingBrush);
-
-   /* canvas.freeDrawingBrush.shadow = new fabric.Shadow({
-        // blur: parseInt(drawingShadowWidth.value, 10) || 0,
-        offsetX: 0,
-        offsetY: 0,
-        affectStroke: true,
-        // color: drawingShadowColorEl.value,
-    });*/
-
-// canvas.freeDrawingBrush.color = '0xffcc00'
-
-/*clearEl.onclick = function() {
-    canvas.clear() };
-  drawingModeEl.onclick = function() {
-    canvas.isDrawingMode = !canvas.isDrawingMode;
-    if (canvas.isDrawingMode) {
-        drawingModeEl.innerHTML = 'Cancel drawing mode';
-        drawingOptionsEl.style.display = '';
-    }
-    else {
-        drawingModeEl.innerHTML = 'Enter drawing mode';
-        drawingOptionsEl.style.display = 'none';
-    }
-};
-  if (fabric.PatternBrush) {
-    let vLinePatternBrush = new fabric.PatternBrush(canvas);
-    vLinePatternBrush.getPatternSrc = function() {
-          let patternCanvas = fabric.document.createElement('canvas');
-        patternCanvas.width = patternCanvas.height = 10;
-        let ctx = patternCanvas.getContext('2d');
-          ctx.strokeStyle = this.color;
-        ctx.lineWidth = 5;
-        ctx.beginPath();
-        ctx.moveTo(0, 5);
-        ctx.lineTo(10, 5);
-        ctx.closePath();
-        ctx.stroke();
-          return patternCanvas;
-    };
-      let hLinePatternBrush = new fabric.PatternBrush(canvas);
-    hLinePatternBrush.getPatternSrc = function() {
-          let patternCanvas = fabric.document.createElement('canvas');
-        patternCanvas.width = patternCanvas.height = 10;
-        let ctx = patternCanvas.getContext('2d');
-          ctx.strokeStyle = this.color;
-        ctx.lineWidth = 5;
-        ctx.beginPath();
-        ctx.moveTo(5, 0);
-        ctx.lineTo(5, 10);
-        ctx.closePath();
-        ctx.stroke();
-          return patternCanvas;
-    };
-      let squarePatternBrush = new fabric.PatternBrush(canvas);
-    squarePatternBrush.getPatternSrc = function() {
-          let squareWidth = 10, squareDistance = 2;
-          let patternCanvas = fabric.document.createElement('canvas');
-        patternCanvas.width = patternCanvas.height = squareWidth + squareDistance;
-        let ctx = patternCanvas.getContext('2d');
-          ctx.fillStyle = this.color;
-        ctx.fillRect(0, 0, squareWidth, squareWidth);
-          return patternCanvas;
-    };
-      let diamondPatternBrush = new fabric.PatternBrush(canvas);
-    diamondPatternBrush.getPatternSrc = function() {
-          let squareWidth = 10, squareDistance = 5;
-        let patternCanvas = fabric.document.createElement('canvas');
-        let rect = new fabric.Rect({
-            width: squareWidth,
-            height: squareWidth,
-            angle: 45,
-            fill: this.color
-        });
-          let canvasWidth = rect.getBoundingRect().width;
-          patternCanvas.width = patternCanvas.height = canvasWidth + squareDistance;
-        rect.set({ left: canvasWidth / 2, top: canvasWidth / 2 });
-          let ctx = patternCanvas.getContext('2d');
-        rect.render(ctx);
-          return patternCanvas;
-    };
-      let img = new Image();
-    img.src = '../assets/honey_im_subtle.png';
-      let texturePatternBrush = new fabric.PatternBrush(canvas);
-    texturePatternBrush.source = img;
-}*/
-
-/*$('drawing-mode-selector').onchange = function() {
-      if (this.value === 'hline') {
-        canvas.freeDrawingBrush = vLinePatternBrush;
-    }
-    else if (this.value === 'vline') {
-        canvas.freeDrawingBrush = hLinePatternBrush;
-    }
-    else if (this.value === 'square') {
-        canvas.freeDrawingBrush = squarePatternBrush;
-    }
-    else if (this.value === 'diamond') {
-        canvas.freeDrawingBrush = diamondPatternBrush;
-    }
-    else if (this.value === 'texture') {
-        canvas.freeDrawingBrush = texturePatternBrush;
-    }
-    else {
-        canvas.freeDrawingBrush = new fabric[this.value + 'Brush'](canvas);
-    }
-     /!* if (canvas.freeDrawingBrush) {
-        canvas.freeDrawingBrush.color = drawingColorEl.value;
-        canvas.freeDrawingBrush.width = parseInt(drawingLineWidthEl.value, 10) || 1;
-        canvas.freeDrawingBrush.shadow = new fabric.Shadow({
-            blur: parseInt(drawingShadowWidth.value, 10) || 0,
-            offsetX: 0,
-            offsetY: 0,
-            affectStroke: true,
-            color: drawingShadowColorEl.value,
-        });
-    }*!/
-};*/
-
-/*drawingColorEl.onchange = function() {
-    canvas.freeDrawingBrush.color = this.value;
-};
-drawingShadowColorEl.onchange = function() {
-    canvas.freeDrawingBrush.shadow.color = this.value;
-};
-drawingLineWidthEl.onchange = function() {
-    canvas.freeDrawingBrush.width = parseInt(this.value, 10) || 1;
-    this.previousSibling.innerHTML = this.value;
-};
-drawingShadowWidth.onchange = function() {
-    canvas.freeDrawingBrush.shadow.blur = parseInt(this.value, 10) || 0;
-    this.previousSibling.innerHTML = this.value;
-};
-drawingShadowOffset.onchange = function() {
-    canvas.freeDrawingBrush.shadow.offsetX = parseInt(this.value, 10) || 0;
-    canvas.freeDrawingBrush.shadow.offsetY = parseInt(this.value, 10) || 0;
-    this.previousSibling.innerHTML = this.value;
-};*/
-
-/* if (canvas.freeDrawingBrush) {
-     canvas.freeDrawingBrush.color = drawingColorEl.value;
-     canvas.freeDrawingBrush.width = parseInt(drawingLineWidthEl.value, 10) || 1;
-     canvas.freeDrawingBrush.shadow = new fabric.Shadow({
-         // blur: parseInt(drawingShadowWidth.value, 10) || 0,
-         offsetX: 0,
-         offsetY: 0,
-         affectStroke: true,
-         // color: drawingShadowColorEl.value,
-     });
- }
-}
-*/
-
-// jrBrush();
-
-/***/ }),
-/* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_fabric__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_fabric___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_fabric__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__module_Brush__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__data_GameConfig__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__module_ClearCanvas__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ui_MainMenu__ = __webpack_require__(14);
-
-
-
-
-
-
-let _id, _id2, _canvas, _menuCanvas;
-let _colorArr = ['#ff00c8', '#59ff00', '#ffa200', '#0073ff'];
-let _sizeArr = [5, 7, 10, 20, 30];
-class SketchBook {
-    constructor(id, width, height, layer = 1) {
-        _id = id;
-        _canvas = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].Canvas(_id, {
-            isDrawingMode: true
-        });
-        this.defaultTool = new __WEBPACK_IMPORTED_MODULE_1__module_Brush__["a" /* default */](_canvas, 'circle', '#ffcc00', 30, 0.3);
-        __WEBPACK_IMPORTED_MODULE_2__data_GameConfig__["a" /* default */].CURRENT_TOOL = this.defaultTool;
-
-        this._init();
-    }
-
-    _aaa() {}
-    _init() {
-
-        let $ = function (id) {
-            return document.getElementById(id);
-        };
-        let brush = $('brush'),
-            airBrush = $('airBrush'),
-            crayon = $('crayon'),
-            fill = $('fill'),
-            line = $('line'),
-            screenTone = $('screenTone'),
-            eraser = $('eraser'),
-            text = $('text'),
-            zoom = $('zoom'),
-            move = $('move'),
-            drawingModeEl = $('drawing-mode'),
-            drawingOptionsEl = $('drawing-mode-options'),
-            drawingColorEl = $('drawing-color'),
-            drawingLineWidthEl = $('drawing-line-width'),
-            clearEl = $('clear-canvas');
-
-        brush.onclick = () => {
-            _canvas.isDrawingMode = true;
-            __WEBPACK_IMPORTED_MODULE_2__data_GameConfig__["a" /* default */].IS_LINE_DRAWING = false;
-            _canvas.freeDrawingBrush = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].PencilBrush(_canvas);
-            _canvas.freeDrawingBrush.color = '#ff4400';
-            _canvas.freeDrawingBrush.width = 40;
-            _canvas.freeDrawingBrush.strokeLineCap = 'round';
-            _canvas.freeDrawingBrush.strokeLineJoin = 'round';
-        };
-
-        airBrush.onclick = () => {
-            _canvas.isDrawingMode = true;
-            __WEBPACK_IMPORTED_MODULE_2__data_GameConfig__["a" /* default */].IS_LINE_DRAWING = false;
-            _canvas.freeDrawingBrush = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].SprayBrush(_canvas);
-            _canvas.freeDrawingBrush.color = '#ffcc00';
-            _canvas.freeDrawingBrush.width = 40;
-            _canvas.freeDrawingBrush.density = 7;
-            _canvas.freeDrawingBrush.dotWidth = 1;
-            _canvas.freeDrawingBrush.dotWidthVariance = 1;
-            _canvas.freeDrawingBrush.randomOpacity = false;
-            _canvas.freeDrawingBrush.optimizeOverlapping = true;
-        };
-
-        crayon.onclick = () => {
-            _canvas.isDrawingMode = true;
-            __WEBPACK_IMPORTED_MODULE_2__data_GameConfig__["a" /* default */].IS_LINE_DRAWING = false;
-            _canvas.freeDrawingBrush = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].SprayBrush(_canvas);
-            _canvas.freeDrawingBrush.color = '#d000ff';
-            _canvas.freeDrawingBrush.width = 20;
-            _canvas.freeDrawingBrush.density = 12;
-            _canvas.freeDrawingBrush.dotWidth = 2;
-            _canvas.freeDrawingBrush.dotWidthVariance = 2;
-            _canvas.freeDrawingBrush.randomOpacity = false;
-            _canvas.freeDrawingBrush.optimizeOverlapping = true;
-        };
-
-        line.onclick = () => {
-            // _canvas.freeDrawingBrush = new fabric.Line(_canvas);
-            _canvas.isDrawingMode = false;
-            _canvas.selection = false;
-            __WEBPACK_IMPORTED_MODULE_2__data_GameConfig__["a" /* default */].IS_LINE_DRAWING = true;
-            let isDown = false;
-
-            function drawLine() {
-                let line;
-                _canvas.on('mouse:down', function (o) {
-                    if (__WEBPACK_IMPORTED_MODULE_2__data_GameConfig__["a" /* default */].IS_LINE_DRAWING) {
-                        // _canvas.selection = false;
-                        isDown = true;
-                        let pointer = _canvas.getPointer(o.e);
-                        let points = [pointer.x, pointer.y, pointer.x, pointer.y];
-
-                        line = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].Line(points, {
-                            strokeWidth: 7,
-                            fill: '#b65858',
-                            stroke: '#931717',
-                            originX: 'center',
-                            originY: 'center'
-                        });
-                        _canvas.add(line);
-                    }
-                });
-
-                _canvas.on('mouse:move', function (o) {
-                    if (!isDown) return;
-                    if (__WEBPACK_IMPORTED_MODULE_2__data_GameConfig__["a" /* default */].IS_LINE_DRAWING) {
-                        let pointer = _canvas.getPointer(o.e);
-                        line.set({ x2: pointer.x, y2: pointer.y });
-                        _canvas.renderAll();
-                    }
-                });
-
-                _canvas.on('mouse:up', function (o) {
-                    isDown = false;
-                });
-            }
-
-            drawLine();
-        };
-
-        screenTone.onclick = () => {
-
-            // _canvas.freeDrawingBrush = new fabric.PatternBrush(_canvas);
-            _canvas.freeDrawingBrush = this._makePattern();
-            // this._makePattern();
-        };
-
-        eraser.onclick = () => {
-            _canvas.selection = false;
-            _canvas.isDrawingMode = true;
-            __WEBPACK_IMPORTED_MODULE_2__data_GameConfig__["a" /* default */].IS_LINE_DRAWING = false;
-            _canvas.freeDrawingBrush = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].PencilBrush(_canvas);
-            _canvas.freeDrawingBrush.color = '#ffffff';
-            _canvas.freeDrawingBrush.width = 50;
-            _canvas.freeDrawingBrush.strokeLineCap = 'round';
-            _canvas.freeDrawingBrush.strokeLineJoin = 'round';
-        };
-
-        move.onclick = () => {
-            _canvas.isDrawingMode = !_canvas.isDrawingMode;
-            if (_canvas.isDrawingMode) move.innerHTML = 'move';else move.innerHTML = 'draw';
-        };
-
-        drawingModeEl.onclick = () => {
-            _canvas.isDrawingMode = !_canvas.isDrawingMode;
-            if (_canvas.isDrawingMode) {
-                drawingModeEl.innerHTML = 'Object-Move';
-                drawingOptionsEl.style.display = '';
-                drawingColorEl.style.display = '';
-                drawingLineWidthEl.style.display = '';
-            } else {
-                drawingModeEl.innerHTML = 'Enter drawing mode';
-                drawingOptionsEl.style.display = 'none';
-                drawingColorEl.style.display = 'none';
-                drawingLineWidthEl.style.display = 'none';
-            }
-        };
-        drawingColorEl.onclick = () => {
-            // this.defaultTool.colorChange();
-            let n = parseInt(Math.random() * _colorArr.length);
-            let c = _colorArr[n];
-            console.log(c);
-            __WEBPACK_IMPORTED_MODULE_2__data_GameConfig__["a" /* default */].CURRENT_TOOL.colorChange(c);
-        };
-
-        drawingLineWidthEl.onclick = () => {
-            let n = parseInt(Math.random() * _sizeArr.length);
-            let c = _sizeArr[n];
-            console.log(c);
-            __WEBPACK_IMPORTED_MODULE_2__data_GameConfig__["a" /* default */].CURRENT_TOOL.sizeChange(c);
-        };
-        clearEl.onclick = () => {
-            _canvas.clear();
-        };
-    }
-
-    _makePattern() {
-        let diamondPatternBrush = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].PatternBrush(_canvas);
-        console.log('aaa');
-        diamondPatternBrush.getPatternSrc = function () {
-            console.log(diamondPatternBrush);
-            console.log('bbb');
-
-            let squareWidth = 10,
-                squareDistance = 5;
-            let patternCanvas = __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].document.createElement('canvas');
-            let rect = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].Rect({
-                width: squareWidth,
-                height: 10,
-                angle: 45,
-                fill: "rgba(0,136,255,0.85)"
-            });
-
-            let canvasWidth = rect.getBoundingRect().width;
-
-            patternCanvas.width = patternCanvas.height = canvasWidth + squareDistance;
-            rect.set({ left: canvasWidth / 2, top: canvasWidth / 2 });
-
-            let ctx = patternCanvas.getContext('2d');
-            rect.render(ctx);
-
-            console.log(patternCanvas);
-            return patternCanvas;
-        };
-    }
-
-    _clearCanvas(canvas) {
-        let a = new __WEBPACK_IMPORTED_MODULE_3__module_ClearCanvas__["a" /* default */](canvas);
-    }
-
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = SketchBook;
-
-
-/***/ }),
-/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {/* build: `node build.js modules=ALL exclude=gestures,accessors requirejs minifier=uglifyjs` */
@@ -604,7 +124,7 @@ if (typeof document !== 'undefined' && typeof window !== 'undefined') {
 }
 else {
   // assume we're running under node.js when document/window are not present
-  var jsdom = __webpack_require__(10);
+  var jsdom = __webpack_require__(9);
   var virtualWindow = new jsdom.JSDOM(
     decodeURIComponent('%3C!DOCTYPE%20html%3E%3Chtml%3E%3Chead%3E%3C%2Fhead%3E%3Cbody%3E%3C%2Fbody%3E%3C%2Fhtml%3E'),
     {
@@ -614,8 +134,8 @@ else {
       resources: 'usable'
     }).window;
   fabric.document = virtualWindow.document;
-  fabric.jsdomImplForWrapper = __webpack_require__(11).implForWrapper;
-  fabric.nodeCanvas = __webpack_require__(12).Canvas;
+  fabric.jsdomImplForWrapper = __webpack_require__(10).implForWrapper;
+  fabric.nodeCanvas = __webpack_require__(11).Canvas;
   fabric.window = virtualWindow;
   DOMParser = fabric.window.DOMParser;
 }
@@ -30302,10 +29822,280 @@ fabric.util.object.extend(fabric.IText.prototype, /** @lends fabric.IText.protot
 })( true ? exports : this);
 
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4).Buffer))
 
 /***/ }),
-/* 5 */
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_fabric__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_fabric___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_fabric__);
+
+
+
+let b, _canvas;
+class Brush {
+    constructor(canvas = null, type = 'circle', color = '#ff4400', size = 30, alpha = 1, strokeLineCap = 'round', strokeLineJoin = 'round') {
+        // this.canvas = canvas;
+        // this.color = color;
+        // this.size = size;
+        // this.alpha = alpha;
+
+        // this.canvas.isDrawingMode = true;
+        // b = this.canvas.freeDrawingBrush;
+        // b.color = this.color;
+        // b.width = this.size;
+        // b.alpha = this.alpha;
+        /**
+         * round, butt, square
+         * @type {string}
+         */
+        // b.strokeLineCap = 'square';
+        // b.strokeLineJoin = 'square';
+        // b.strokeMiterLimit = 200;
+
+
+    }
+
+    draw(canvas) {
+        _canvas = canvas;
+        _canvas.isDrawingMode = true;
+        _canvas.freeDrawingBrush = new __WEBPACK_IMPORTED_MODULE_1_fabric__["fabric"].PencilBrush(_canvas);
+        _canvas.freeDrawingBrush.color = '#ff4400';
+        _canvas.freeDrawingBrush.width = 40;
+        _canvas.freeDrawingBrush.strokeLineCap = 'round';
+        _canvas.freeDrawingBrush.strokeLineJoin = 'round';
+
+        __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__["a" /* default */].IS_LINE_DRAWING = false;
+    }
+
+    colorChange(color = '#000') {
+        b.color = color;
+    }
+    sizeChange(size = 7) {
+        b.width = size;
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Brush;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__module_Brush__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sketchBook_SketchBook__ = __webpack_require__(12);
+
+
+
+let index;
+index = function () {
+    // console.log("A");
+    // let canvas = document.getElementById('drawStage');
+    // this.sketchBook = new SketchBook(canvas, 500, 500, 1);
+    // this.addChild(this.sketchBook);
+};
+
+let s = new __WEBPACK_IMPORTED_MODULE_1__sketchBook_SketchBook__["a" /* default */]('drawStage');
+
+/*export default class index {
+    constructor() {
+
+        this._init();
+
+    }
+
+    _init() {
+        console.log("A")
+        let canvas = document.getElementById('drawStage');
+        this.sketchBook = new SketchBook(canvas, 500, 500, 1);
+        // this.addChild(this.sketchBook);
+    }
+
+
+}*/
+/*
+jrBrush = function() {
+    let $ = function(id){return document.getElementById(id)};
+
+    let canvas = this.__canvas = new fabric.Canvas('drawStage', {
+        isDrawingMode: true
+    });
+
+    fabric.Object.prototype.transparentCorners = false;
+
+    let drawingModeEl = $('drawing-mode'),
+        drawingOptionsEl = $('drawing-mode-options'),
+        drawingColorEl = $('drawing-color'),
+        drawingLineWidthEl = $('drawing-line-width'),
+        clearEl = $('clear-canvas');
+
+    // canvas.freeDrawingBrush.color = drawingColorEl.value;
+    // canvas.freeDrawingBrush.color = (35,175,48);
+    // canvas.freeDrawingBrush.width = parseInt(drawingLineWidthEl.value, 10) || 1;
+    canvas.freeDrawingBrush.width = 20;
+    canvas.freeDrawingBrush.color = "#308959"
+    console.log(canvas.freeDrawingBrush);
+
+   /* canvas.freeDrawingBrush.shadow = new fabric.Shadow({
+        // blur: parseInt(drawingShadowWidth.value, 10) || 0,
+        offsetX: 0,
+        offsetY: 0,
+        affectStroke: true,
+        // color: drawingShadowColorEl.value,
+    });*/
+
+// canvas.freeDrawingBrush.color = '0xffcc00'
+
+/*clearEl.onclick = function() {
+    canvas.clear() };
+  drawingModeEl.onclick = function() {
+    canvas.isDrawingMode = !canvas.isDrawingMode;
+    if (canvas.isDrawingMode) {
+        drawingModeEl.innerHTML = 'Cancel drawing mode';
+        drawingOptionsEl.style.display = '';
+    }
+    else {
+        drawingModeEl.innerHTML = 'Enter drawing mode';
+        drawingOptionsEl.style.display = 'none';
+    }
+};
+  if (fabric.PatternBrush) {
+    let vLinePatternBrush = new fabric.PatternBrush(canvas);
+    vLinePatternBrush.getPatternSrc = function() {
+          let patternCanvas = fabric.document.createElement('canvas');
+        patternCanvas.width = patternCanvas.height = 10;
+        let ctx = patternCanvas.getContext('2d');
+          ctx.strokeStyle = this.color;
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.moveTo(0, 5);
+        ctx.lineTo(10, 5);
+        ctx.closePath();
+        ctx.stroke();
+          return patternCanvas;
+    };
+      let hLinePatternBrush = new fabric.PatternBrush(canvas);
+    hLinePatternBrush.getPatternSrc = function() {
+          let patternCanvas = fabric.document.createElement('canvas');
+        patternCanvas.width = patternCanvas.height = 10;
+        let ctx = patternCanvas.getContext('2d');
+          ctx.strokeStyle = this.color;
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.moveTo(5, 0);
+        ctx.lineTo(5, 10);
+        ctx.closePath();
+        ctx.stroke();
+          return patternCanvas;
+    };
+      let squarePatternBrush = new fabric.PatternBrush(canvas);
+    squarePatternBrush.getPatternSrc = function() {
+          let squareWidth = 10, squareDistance = 2;
+          let patternCanvas = fabric.document.createElement('canvas');
+        patternCanvas.width = patternCanvas.height = squareWidth + squareDistance;
+        let ctx = patternCanvas.getContext('2d');
+          ctx.fillStyle = this.color;
+        ctx.fillRect(0, 0, squareWidth, squareWidth);
+          return patternCanvas;
+    };
+      let diamondPatternBrush = new fabric.PatternBrush(canvas);
+    diamondPatternBrush.getPatternSrc = function() {
+          let squareWidth = 10, squareDistance = 5;
+        let patternCanvas = fabric.document.createElement('canvas');
+        let rect = new fabric.Rect({
+            width: squareWidth,
+            height: squareWidth,
+            angle: 45,
+            fill: this.color
+        });
+          let canvasWidth = rect.getBoundingRect().width;
+          patternCanvas.width = patternCanvas.height = canvasWidth + squareDistance;
+        rect.set({ left: canvasWidth / 2, top: canvasWidth / 2 });
+          let ctx = patternCanvas.getContext('2d');
+        rect.render(ctx);
+          return patternCanvas;
+    };
+      let img = new Image();
+    img.src = '../assets/honey_im_subtle.png';
+      let texturePatternBrush = new fabric.PatternBrush(canvas);
+    texturePatternBrush.source = img;
+}*/
+
+/*$('drawing-mode-selector').onchange = function() {
+      if (this.value === 'hline') {
+        canvas.freeDrawingBrush = vLinePatternBrush;
+    }
+    else if (this.value === 'vline') {
+        canvas.freeDrawingBrush = hLinePatternBrush;
+    }
+    else if (this.value === 'square') {
+        canvas.freeDrawingBrush = squarePatternBrush;
+    }
+    else if (this.value === 'diamond') {
+        canvas.freeDrawingBrush = diamondPatternBrush;
+    }
+    else if (this.value === 'texture') {
+        canvas.freeDrawingBrush = texturePatternBrush;
+    }
+    else {
+        canvas.freeDrawingBrush = new fabric[this.value + 'Brush'](canvas);
+    }
+     /!* if (canvas.freeDrawingBrush) {
+        canvas.freeDrawingBrush.color = drawingColorEl.value;
+        canvas.freeDrawingBrush.width = parseInt(drawingLineWidthEl.value, 10) || 1;
+        canvas.freeDrawingBrush.shadow = new fabric.Shadow({
+            blur: parseInt(drawingShadowWidth.value, 10) || 0,
+            offsetX: 0,
+            offsetY: 0,
+            affectStroke: true,
+            color: drawingShadowColorEl.value,
+        });
+    }*!/
+};*/
+
+/*drawingColorEl.onchange = function() {
+    canvas.freeDrawingBrush.color = this.value;
+};
+drawingShadowColorEl.onchange = function() {
+    canvas.freeDrawingBrush.shadow.color = this.value;
+};
+drawingLineWidthEl.onchange = function() {
+    canvas.freeDrawingBrush.width = parseInt(this.value, 10) || 1;
+    this.previousSibling.innerHTML = this.value;
+};
+drawingShadowWidth.onchange = function() {
+    canvas.freeDrawingBrush.shadow.blur = parseInt(this.value, 10) || 0;
+    this.previousSibling.innerHTML = this.value;
+};
+drawingShadowOffset.onchange = function() {
+    canvas.freeDrawingBrush.shadow.offsetX = parseInt(this.value, 10) || 0;
+    canvas.freeDrawingBrush.shadow.offsetY = parseInt(this.value, 10) || 0;
+    this.previousSibling.innerHTML = this.value;
+};*/
+
+/* if (canvas.freeDrawingBrush) {
+     canvas.freeDrawingBrush.color = drawingColorEl.value;
+     canvas.freeDrawingBrush.width = parseInt(drawingLineWidthEl.value, 10) || 1;
+     canvas.freeDrawingBrush.shadow = new fabric.Shadow({
+         // blur: parseInt(drawingShadowWidth.value, 10) || 0,
+         offsetX: 0,
+         offsetY: 0,
+         affectStroke: true,
+         // color: drawingShadowColorEl.value,
+     });
+ }
+}
+*/
+
+// jrBrush();
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30319,9 +30109,9 @@ fabric.util.object.extend(fabric.IText.prototype, /** @lends fabric.IText.protot
 
 
 
-var base64 = __webpack_require__(7)
-var ieee754 = __webpack_require__(8)
-var isArray = __webpack_require__(9)
+var base64 = __webpack_require__(6)
+var ieee754 = __webpack_require__(7)
+var isArray = __webpack_require__(8)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -32099,10 +31889,10 @@ function isnan (val) {
   return val !== val // eslint-disable-line no-self-compare
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports) {
 
 var g;
@@ -32129,7 +31919,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32288,7 +32078,7 @@ function fromByteArray (uint8) {
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -32378,7 +32168,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -32387,6 +32177,12 @@ module.exports = Array.isArray || function (arr) {
   return toString.call(arr) == '[object Array]';
 };
 
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+/* (ignored) */
 
 /***/ }),
 /* 10 */
@@ -32402,9 +32198,175 @@ module.exports = Array.isArray || function (arr) {
 
 /***/ }),
 /* 12 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-/* (ignored) */
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_fabric__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_fabric___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_fabric__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__module_Brush__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__data_GameConfig__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__module_ClearCanvas__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ui_MainMenu__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__module_Airbrush__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__module_Crayon__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__module_LineDraw__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__module_Eraser__ = __webpack_require__(18);
+
+
+
+
+
+
+
+
+
+
+let _id, _id2, _canvas, _menuCanvas;
+let _colorArr = ['#ff00c8', '#59ff00', '#ffa200', '#0073ff'];
+let _sizeArr = [5, 7, 10, 20, 30];
+class SketchBook {
+    constructor(id, width, height, layer = 1) {
+        _id = id;
+        _canvas = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].Canvas(_id, {
+            // isDrawingMode: true
+        });
+
+        this._init();
+    }
+
+    _init() {
+
+        let $ = function (id) {
+            return document.getElementById(id);
+        };
+        let brush = $('brush'),
+            airBrush = $('airBrush'),
+            crayon = $('crayon'),
+
+        // fill = $('fill'),
+        line = $('line'),
+            screenTone = $('screenTone'),
+            eraser = $('eraser'),
+            text = $('text'),
+            zoom = $('zoom'),
+
+        // move = $('move'),
+        clearEl = $('clear');
+
+        // drawingModeEl = $('drawing-mode'),
+        // drawingOptionsEl = $('drawing-mode-options'),
+        // drawingColorEl = $('drawing-color'),
+        // drawingLineWidthEl = $('drawing-line-width');
+
+
+        brush.onclick = () => {
+
+            __WEBPACK_IMPORTED_MODULE_1__module_Brush__["a" /* default */].prototype.draw(_canvas);
+        };
+
+        airBrush.onclick = () => {
+
+            __WEBPACK_IMPORTED_MODULE_5__module_Airbrush__["a" /* default */].prototype.draw(_canvas);
+        };
+
+        crayon.onclick = () => {
+
+            __WEBPACK_IMPORTED_MODULE_6__module_Crayon__["a" /* default */].prototype.draw(_canvas);
+        };
+
+        line.onclick = () => {
+
+            __WEBPACK_IMPORTED_MODULE_7__module_LineDraw__["a" /* default */].prototype.draw(_canvas);
+        };
+
+        /* screenTone.onclick =()=> {
+               // _canvas.freeDrawingBrush = new fabric.PatternBrush(_canvas);
+             _canvas.freeDrawingBrush = this._makePattern();
+             // this._makePattern();
+         }*/
+
+        eraser.onclick = () => {
+
+            __WEBPACK_IMPORTED_MODULE_8__module_Eraser__["a" /* default */].prototype.draw(_canvas);
+        };
+
+        clearEl.onclick = () => {
+            _canvas.clear();
+        };
+
+        /*move.onclick =()=> {
+            _canvas.isDrawingMode = !_canvas.isDrawingMode;
+            if (_canvas.isDrawingMode) move.innerHTML = 'move';
+            else move.innerHTML = 'draw';
+        };
+          drawingModeEl.onclick =()=> {
+            _canvas.isDrawingMode = !_canvas.isDrawingMode;
+            if (_canvas.isDrawingMode) {
+                drawingModeEl.innerHTML = 'Object-Move';
+                drawingOptionsEl.style.display = '';
+                drawingColorEl.style.display = '';
+                drawingLineWidthEl.style.display = '';
+            }
+            else {
+                drawingModeEl.innerHTML = 'Enter drawing mode';
+                drawingOptionsEl.style.display = 'none';
+                drawingColorEl.style.display = 'none';
+                drawingLineWidthEl.style.display = 'none';
+            }
+          }*/
+
+        /*  drawingColorEl.onclick =()=> {
+              // this.defaultTool.colorChange();
+              let n = parseInt(Math.random() * _colorArr.length);
+              let c = _colorArr[n];
+              console.log(c);
+              GameConfig.CURRENT_TOOL.colorChange(c);
+          };
+            drawingLineWidthEl.onclick =()=> {
+              let n = parseInt(Math.random() * _sizeArr.length);
+              let c = _sizeArr[n];
+              console.log(c);
+              GameConfig.CURRENT_TOOL.sizeChange(c)
+          }*/
+    }
+
+    _makePattern() {
+        let diamondPatternBrush = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].PatternBrush(_canvas);
+        console.log('aaa');
+        diamondPatternBrush.getPatternSrc = function () {
+            console.log(diamondPatternBrush);
+            console.log('bbb');
+
+            let squareWidth = 10,
+                squareDistance = 5;
+            let patternCanvas = __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].document.createElement('canvas');
+            let rect = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].Rect({
+                width: squareWidth,
+                height: 10,
+                angle: 45,
+                fill: "rgba(0,136,255,0.85)"
+            });
+
+            let canvasWidth = rect.getBoundingRect().width;
+
+            patternCanvas.width = patternCanvas.height = canvasWidth + squareDistance;
+            rect.set({ left: canvasWidth / 2, top: canvasWidth / 2 });
+
+            let ctx = patternCanvas.getContext('2d');
+            rect.render(ctx);
+
+            console.log(patternCanvas);
+            return patternCanvas;
+        };
+    }
+
+    _clearCanvas(canvas) {
+        let a = new __WEBPACK_IMPORTED_MODULE_3__module_ClearCanvas__["a" /* default */](canvas);
+    }
+
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = SketchBook;
+
 
 /***/ }),
 /* 13 */
@@ -32509,6 +32471,248 @@ class MainMenu {
 
 }
 /* unused harmony export default */
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_fabric__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_fabric___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_fabric__);
+
+
+
+let b, _canvas;
+class Airbrush {
+    constructor(canvas = null, type = 'circle', color = '#ff4400', size = 30, alpha = 1, strokeLineCap = 'round', strokeLineJoin = 'round') {
+        // this.canvas = canvas;
+        // this.color = color;
+        // this.size = size;
+        // this.alpha = alpha;
+
+        // this.canvas.isDrawingMode = true;
+        // b = this.canvas.freeDrawingBrush;
+        // b.color = this.color;
+        // b.width = this.size;
+        // b.alpha = this.alpha;
+        /**
+         * round, butt, square
+         * @type {string}
+         */
+        // b.strokeLineCap = 'square';
+        // b.strokeLineJoin = 'square';
+        // b.strokeMiterLimit = 200;
+
+
+    }
+
+    draw(canvas) {
+        _canvas = canvas;
+        _canvas.isDrawingMode = true;
+        _canvas.freeDrawingBrush = new __WEBPACK_IMPORTED_MODULE_1_fabric__["fabric"].SprayBrush(_canvas);
+        _canvas.freeDrawingBrush.color = '#ffcc00';
+        _canvas.freeDrawingBrush.width = 40;
+        _canvas.freeDrawingBrush.density = 7;
+        _canvas.freeDrawingBrush.dotWidth = 1;
+        _canvas.freeDrawingBrush.dotWidthVariance = 1;
+        _canvas.freeDrawingBrush.randomOpacity = false;
+        _canvas.freeDrawingBrush.optimizeOverlapping = true;
+
+        __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__["a" /* default */].IS_LINE_DRAWING = false;
+    }
+
+    colorChange(color = '#000') {
+        b.color = color;
+    }
+    sizeChange(size = 7) {
+        b.width = size;
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Airbrush;
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_fabric__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_fabric___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_fabric__);
+
+
+
+let b, _canvas;
+class Crayon {
+    constructor(canvas = null, type = 'circle', color = '#ff4400', size = 30, alpha = 1, strokeLineCap = 'round', strokeLineJoin = 'round') {
+        // this.canvas = canvas;
+        // this.color = color;
+        // this.size = size;
+        // this.alpha = alpha;
+
+        // this.canvas.isDrawingMode = true;
+        // b = this.canvas.freeDrawingBrush;
+        // b.color = this.color;
+        // b.width = this.size;
+        // b.alpha = this.alpha;
+        /**
+         * round, butt, square
+         * @type {string}
+         */
+        // b.strokeLineCap = 'square';
+        // b.strokeLineJoin = 'square';
+        // b.strokeMiterLimit = 200;
+
+
+    }
+
+    draw(canvas) {
+        _canvas = canvas;
+        _canvas.isDrawingMode = true;
+        _canvas.freeDrawingBrush = new __WEBPACK_IMPORTED_MODULE_1_fabric__["fabric"].SprayBrush(_canvas);
+        _canvas.freeDrawingBrush.color = '#d000ff';
+        _canvas.freeDrawingBrush.width = 20;
+        _canvas.freeDrawingBrush.density = 12;
+        _canvas.freeDrawingBrush.dotWidth = 2;
+        _canvas.freeDrawingBrush.dotWidthVariance = 2;
+        _canvas.freeDrawingBrush.randomOpacity = false;
+        _canvas.freeDrawingBrush.optimizeOverlapping = true;
+
+        __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__["a" /* default */].IS_LINE_DRAWING = false;
+    }
+
+    colorChange(color = '#000') {
+        b.color = color;
+    }
+    sizeChange(size = 7) {
+        b.width = size;
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Crayon;
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_fabric__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_fabric___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_fabric__);
+
+
+
+let b, _canvas, _isDown;
+class LineDraw {
+    constructor(canvas = null, type = 'circle', color = '#ff4400', size = 30, alpha = 1, strokeLineCap = 'round', strokeLineJoin = 'round') {}
+
+    draw(canvas) {
+        _canvas = canvas;
+        _canvas.isDrawingMode = false;
+        _canvas.selection = false;
+        __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__["a" /* default */].IS_LINE_DRAWING = true;
+
+        _isDown = false;
+        let line;
+        _canvas.on('mouse:down', function (o) {
+            if (__WEBPACK_IMPORTED_MODULE_0__data_GameConfig__["a" /* default */].IS_LINE_DRAWING) {
+                // _canvas.selection = false;
+                _isDown = true;
+                let pointer = _canvas.getPointer(o.e);
+                let points = [pointer.x, pointer.y, pointer.x, pointer.y];
+
+                line = new __WEBPACK_IMPORTED_MODULE_1_fabric__["fabric"].Line(points, {
+                    strokeWidth: 7,
+                    fill: '#b65858',
+                    stroke: '#931717',
+                    originX: 'center',
+                    originY: 'center'
+                });
+                _canvas.add(line);
+            }
+        });
+
+        _canvas.on('mouse:move', function (o) {
+            if (!_isDown) return;
+            if (__WEBPACK_IMPORTED_MODULE_0__data_GameConfig__["a" /* default */].IS_LINE_DRAWING) {
+                let pointer = _canvas.getPointer(o.e);
+                line.set({ x2: pointer.x, y2: pointer.y });
+                _canvas.renderAll();
+            }
+        });
+
+        _canvas.on('mouse:up', function (o) {
+            _isDown = false;
+        });
+    }
+
+    colorChange(color = '#000') {
+        b.color = color;
+    }
+    sizeChange(size = 7) {
+        b.width = size;
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = LineDraw;
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_fabric__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_fabric___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_fabric__);
+
+
+
+let b, _canvas;
+class Eraser {
+    constructor(canvas = null, type = 'circle', color = '#fff', size = 30, alpha = 1, strokeLineCap = 'round', strokeLineJoin = 'round') {
+        // this.canvas = canvas;
+        // this.color = color;
+        // this.size = size;
+        // this.alpha = alpha;
+
+        // this.canvas.isDrawingMode = true;
+        // b = this.canvas.freeDrawingBrush;
+        // b.color = this.color;
+        // b.width = this.size;
+        // b.alpha = this.alpha;
+        /**
+         * round, butt, square
+         * @type {string}
+         */
+        // b.strokeLineCap = 'square';
+        // b.strokeLineJoin = 'square';
+        // b.strokeMiterLimit = 200;
+
+
+    }
+
+    draw(canvas) {
+        _canvas = canvas;
+        _canvas.isDrawingMode = true;
+        _canvas.freeDrawingBrush = new __WEBPACK_IMPORTED_MODULE_1_fabric__["fabric"].PencilBrush(_canvas);
+        _canvas.freeDrawingBrush.color = '#fff';
+        _canvas.freeDrawingBrush.width = 40;
+        _canvas.freeDrawingBrush.strokeLineCap = 'round';
+        _canvas.freeDrawingBrush.strokeLineJoin = 'round';
+
+        __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__["a" /* default */].IS_LINE_DRAWING = false;
+    }
+
+    colorChange(color = '#000') {
+        b.color = color;
+    }
+    sizeChange(size = 7) {
+        b.width = size;
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Eraser;
 
 
 /***/ })

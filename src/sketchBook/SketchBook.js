@@ -3,6 +3,10 @@ import Brush from "../module/Brush";
 import GameConfig from "../data/GameConfig";
 import ClearCanvas from "../module/ClearCanvas";
 import MainMenu from "../ui/MainMenu";
+import Airbrush from "../module/Airbrush";
+import Crayon from "../module/Crayon";
+import LineDraw from "../module/LineDraw";
+import Eraser from "../module/Eraser";
 
 let _id, _id2, _canvas, _menuCanvas;
 let _colorArr = ['#ff00c8', '#59ff00', '#ffa200', '#0073ff'];
@@ -11,17 +15,12 @@ export default class SketchBook {
     constructor(id, width, height, layer = 1) {
         _id = id;
         _canvas = new fabric.Canvas(_id, {
-            isDrawingMode: true
+            // isDrawingMode: true
         });
-        this.defaultTool = new Brush(_canvas, 'circle', '#ffcc00', 30, 0.3);
-        GameConfig.CURRENT_TOOL = this.defaultTool;
 
         this._init();
     }
 
-    _aaa() {
-
-    }
     _init() {
 
 
@@ -29,122 +28,58 @@ export default class SketchBook {
         let brush = $('brush'),
             airBrush = $('airBrush'),
             crayon = $('crayon'),
-            fill = $('fill'),
+            // fill = $('fill'),
             line = $('line'),
             screenTone = $('screenTone'),
             eraser = $('eraser'),
             text = $('text'),
             zoom = $('zoom'),
-            move = $('move'),
+            // move = $('move'),
+            clearEl = $('clear');
 
-            drawingModeEl = $('drawing-mode'),
-            drawingOptionsEl = $('drawing-mode-options'),
-            drawingColorEl = $('drawing-color'),
-            drawingLineWidthEl = $('drawing-line-width'),
-            clearEl = $('clear-canvas');
+            // drawingModeEl = $('drawing-mode'),
+            // drawingOptionsEl = $('drawing-mode-options'),
+            // drawingColorEl = $('drawing-color'),
+            // drawingLineWidthEl = $('drawing-line-width');
+
 
         brush.onclick =()=> {
-            _canvas.isDrawingMode = true;
-            GameConfig.IS_LINE_DRAWING = false;
-            _canvas.freeDrawingBrush = new fabric.PencilBrush(_canvas);
-            _canvas.freeDrawingBrush.color = '#ff4400';
-            _canvas.freeDrawingBrush.width = 40;
-            _canvas.freeDrawingBrush.strokeLineCap = 'round';
-            _canvas.freeDrawingBrush.strokeLineJoin = 'round';
+
+            Brush.prototype.draw(_canvas);
         }
 
         airBrush.onclick =()=> {
-            _canvas.isDrawingMode = true;
-            GameConfig.IS_LINE_DRAWING = false;
-            _canvas.freeDrawingBrush = new fabric.SprayBrush(_canvas);
-            _canvas.freeDrawingBrush.color = '#ffcc00';
-            _canvas.freeDrawingBrush.width = 40;
-            _canvas.freeDrawingBrush.density = 7;
-            _canvas.freeDrawingBrush.dotWidth = 1;
-            _canvas.freeDrawingBrush.dotWidthVariance = 1;
-            _canvas.freeDrawingBrush.randomOpacity = false;
-            _canvas.freeDrawingBrush.optimizeOverlapping = true;
+
+            Airbrush.prototype.draw(_canvas);
         }
 
         crayon.onclick =()=> {
-            _canvas.isDrawingMode = true;
-            GameConfig.IS_LINE_DRAWING = false;
-            _canvas.freeDrawingBrush = new fabric.SprayBrush(_canvas);
-            _canvas.freeDrawingBrush.color = '#d000ff';
-            _canvas.freeDrawingBrush.width = 20;
-            _canvas.freeDrawingBrush.density = 12;
-            _canvas.freeDrawingBrush.dotWidth = 2;
-            _canvas.freeDrawingBrush.dotWidthVariance = 2;
-            _canvas.freeDrawingBrush.randomOpacity = false;
-            _canvas.freeDrawingBrush.optimizeOverlapping = true;
 
+            Crayon.prototype.draw(_canvas);
         }
 
         line.onclick =()=> {
-            // _canvas.freeDrawingBrush = new fabric.Line(_canvas);
-            _canvas.isDrawingMode = false;
-            _canvas.selection = false;
-            GameConfig.IS_LINE_DRAWING = true;
-            let isDown = false;
 
-            function drawLine() {
-                let line;
-                _canvas.on('mouse:down', function (o) {
-                    if (GameConfig.IS_LINE_DRAWING) {
-                        // _canvas.selection = false;
-                        isDown = true;
-                        let pointer = _canvas.getPointer(o.e);
-                        let points = [pointer.x, pointer.y, pointer.x, pointer.y];
-
-                        line = new fabric.Line(points, {
-                            strokeWidth: 7,
-                            fill: '#b65858',
-                            stroke: '#931717',
-                            originX: 'center',
-                            originY: 'center'
-                        });
-                        _canvas.add(line);
-                    }
-                });
-
-                _canvas.on('mouse:move', function (o) {
-                    if (!isDown)
-                        return;
-                    if (GameConfig.IS_LINE_DRAWING) {
-                        let pointer = _canvas.getPointer(o.e);
-                        line.set({x2: pointer.x, y2: pointer.y});
-                        _canvas.renderAll();
-                    }
-                });
-
-                _canvas.on('mouse:up', function (o) {
-                    isDown = false;
-                });
-            }
-
-            drawLine();
+            LineDraw.prototype.draw(_canvas);
         }
 
-        screenTone.onclick =()=> {
+       /* screenTone.onclick =()=> {
 
             // _canvas.freeDrawingBrush = new fabric.PatternBrush(_canvas);
             _canvas.freeDrawingBrush = this._makePattern();
             // this._makePattern();
-
-        }
+        }*/
 
         eraser.onclick =()=> {
-            _canvas.selection = false;
-            _canvas.isDrawingMode = true;
-            GameConfig.IS_LINE_DRAWING = false;
-            _canvas.freeDrawingBrush = new fabric.PencilBrush(_canvas);
-            _canvas.freeDrawingBrush.color = '#ffffff';
-            _canvas.freeDrawingBrush.width = 50;
-            _canvas.freeDrawingBrush.strokeLineCap = 'round';
-            _canvas.freeDrawingBrush.strokeLineJoin = 'round';
+
+            Eraser.prototype.draw(_canvas);
         };
 
-        move.onclick =()=> {
+        clearEl.onclick = ()=> {
+            _canvas.clear()
+        };
+
+        /*move.onclick =()=> {
             _canvas.isDrawingMode = !_canvas.isDrawingMode;
             if (_canvas.isDrawingMode) move.innerHTML = 'move';
             else move.innerHTML = 'draw';
@@ -165,8 +100,11 @@ export default class SketchBook {
                 drawingLineWidthEl.style.display = 'none';
             }
 
-        }
-        drawingColorEl.onclick =()=> {
+        }*/
+
+
+
+      /*  drawingColorEl.onclick =()=> {
             // this.defaultTool.colorChange();
             let n = parseInt(Math.random() * _colorArr.length);
             let c = _colorArr[n];
@@ -179,10 +117,8 @@ export default class SketchBook {
             let c = _sizeArr[n];
             console.log(c);
             GameConfig.CURRENT_TOOL.sizeChange(c)
-        }
-        clearEl.onclick = ()=> {
-            _canvas.clear()
-        };
+        }*/
+
 
     }
 

@@ -2,7 +2,7 @@ import GameConfig from "../data/GameConfig";
 import {fabric} from "fabric";
 
 let b, _canvas;
-export default class Brush {
+export default class Airbrush {
     constructor(canvas = null, type='circle', color = '#ff4400', size = 30, alpha = 1,
                 strokeLineCap = 'round', strokeLineJoin = 'round') {
         // this.canvas = canvas;
@@ -29,11 +29,14 @@ export default class Brush {
     draw(canvas) {
         _canvas = canvas;
         _canvas.isDrawingMode = true;
-        _canvas.freeDrawingBrush = new fabric.PencilBrush(_canvas);
-        _canvas.freeDrawingBrush.color = '#ff4400';
+        _canvas.freeDrawingBrush = new fabric.SprayBrush(_canvas);
+        _canvas.freeDrawingBrush.color = '#ffcc00';
         _canvas.freeDrawingBrush.width = 40;
-        _canvas.freeDrawingBrush.strokeLineCap = 'round';
-        _canvas.freeDrawingBrush.strokeLineJoin = 'round';
+        _canvas.freeDrawingBrush.density = 7;
+        _canvas.freeDrawingBrush.dotWidth = 1;
+        _canvas.freeDrawingBrush.dotWidthVariance = 1;
+        _canvas.freeDrawingBrush.randomOpacity = false;
+        _canvas.freeDrawingBrush.optimizeOverlapping = true;
 
         GameConfig.IS_LINE_DRAWING = false;
     }
