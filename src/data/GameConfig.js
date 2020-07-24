@@ -1,6 +1,8 @@
 let _tool = null;
 let _isDrawingMode = false;
 let _isLineDrawing = false;
+let _selectedColor = '';
+let _selectedSize = 0;
 
 export default class GameConfig {
     static get CURRENT_TOOL() { return _tool};
@@ -11,5 +13,11 @@ export default class GameConfig {
 
     static get IS_LINE_DRAWING() { return _isLineDrawing};
     static set IS_LINE_DRAWING(bool) { _isLineDrawing = bool};
+
+    static get SELECTED_COLOR() { return _selectedColor};
+    static set SELECTED_COLOR(str) { _selectedColor = str};
+
+    static get SELECTED_SIZE() { return _selectedSize};
+    static set SELECTED_SIZE(num) { _selectedSize = num};
 
 }

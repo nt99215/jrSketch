@@ -47,38 +47,72 @@ export default class SketchBook {
 
 
         colorEl.onchange = function() {
-            console.log(this.value);
-            if(GameConfig.CURRENT_TOOL) GameConfig.CURRENT_TOOL.color = this.value;
-        }
-
-        opacityEl.onchange = function() {
-            console.log(this.value);
-            // GameConfig.CURRENT_TOOL.width = this.value;
+            if(GameConfig.CURRENT_TOOL)
+            {
+                GameConfig.CURRENT_TOOL.setColor(this.value);
+                GameConfig.CURRENT_TOOL.colorChange();
+            }
         }
 
         sizeEl.onchange = function() {
-            console.log(this.value);
-            if(GameConfig.CURRENT_TOOL) GameConfig.CURRENT_TOOL.width = this.value;
+            if(GameConfig.CURRENT_TOOL)
+            {
+                GameConfig.CURRENT_TOOL.setSize(this.value);
+                GameConfig.CURRENT_TOOL.sizeChange();
+            }
+        }
+
+        opacityEl.onchange = function() {
+            if(GameConfig.CURRENT_TOOL)
+            {
+                GameConfig.CURRENT_TOOL.setSize(this.value);
+                GameConfig.CURRENT_TOOL.sizeChange();
+            }
         }
 
         brushEl.onclick =()=> {
 
             Brush.prototype.draw(_canvas);
+            colorEl.value = Brush.prototype.getColor();
+            sizeEl.value = Brush.prototype.getSize();
+            opacityEl.value = Brush.prototype.getOpacity();
+            colorEl.style.display = '';
+            $('_colorSpan').style.display = '';
+            opacityEl.style.display = '';
+            $('_opacitySpan').style.display = '';
         }
 
         airBrushEl.onclick =()=> {
 
             Airbrush.prototype.draw(_canvas);
+            colorEl.value = Airbrush.prototype.getColor();
+            sizeEl.value = Airbrush.prototype.getSize();
+            colorEl.style.display = '';
+            $('_colorSpan').style.display = '';
+            opacityEl.style.display = 'none';
+            $('_opacitySpan').style.display = 'none';
         }
 
         crayonEl.onclick =()=> {
 
             Crayon.prototype.draw(_canvas);
+            colorEl.value = Crayon.prototype.getColor();
+            sizeEl.value = Crayon.prototype.getSize();
+            colorEl.style.display = '';
+            $('_colorSpan').style.display = '';
+            opacityEl.style.display = 'none';
+            $('_opacitySpan').style.display = 'none';
         }
 
         lineEl.onclick =()=> {
 
             LineDraw.prototype.draw(_canvas);
+            colorEl.value = LineDraw.prototype.getColor();
+            sizeEl.value = LineDraw.prototype.getSize();
+            colorEl.style.display = '';
+            $('_colorSpan').style.display = '';
+            opacityEl.style.display = 'none';
+            $('_opacitySpan').style.display = 'none';
         }
 
        /* screenToneEl.onclick =()=> {
@@ -91,10 +125,15 @@ export default class SketchBook {
         eraserEl.onclick =()=> {
 
             Eraser.prototype.draw(_canvas);
+            sizeEl.value = Crayon.prototype.getSize();
+            colorEl.style.display = 'none';
+            $('_colorSpan').style.display = 'none';
+            opacityEl.style.display = 'none';
+            $('_opacitySpan').style.display = 'none';
         };
 
         clearEl.onclick = ()=> {
-            _canvas.clear()
+            _canvas.clear();
         };
 
         /*moveEl.onclick =()=> {

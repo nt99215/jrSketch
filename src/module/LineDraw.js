@@ -1,22 +1,22 @@
 import GameConfig from "../data/GameConfig";
 import {fabric} from "fabric";
 
-let b, _canvas, _isDown;
+let _canvas, _isDown;
+let _color = '#000000';
+let _size = 7;
+let _opacity = 100;
 export default class LineDraw {
-    constructor(canvas = null, type='circle', color = '#000', size = 30, alpha = 1,
-                strokeLineCap = 'round', strokeLineJoin = 'round') {
-
-    }
-
 
     draw(canvas) {
         _canvas = canvas;
         _canvas.isDrawingMode = false;
         _canvas.selection = false;
         GameConfig.IS_LINE_DRAWING = true;
-        GameConfig.CURRENT_TOOL = null;
-
+        GameConfig.CURRENT_TOOL = this;
         _isDown = false;
+        _color = this.getColor();
+        _size = this.getSize();
+
         let line;
         _canvas.on('mouse:down', function (o) {
             if (GameConfig.IS_LINE_DRAWING) {
@@ -25,10 +25,11 @@ export default class LineDraw {
                 let pointer = _canvas.getPointer(o.e);
                 let points = [pointer.x, pointer.y, pointer.x, pointer.y];
 
+
                 line = new fabric.Line(points, {
-                    strokeWidth: 7,
-                    fill: '#b65858',
-                    stroke: '#931717',
+                    strokeWidth: _size,
+                    fill: _color,
+                    stroke: _color,
                     originX: 'center',
                     originY: 'center'
                 });
@@ -52,10 +53,25 @@ export default class LineDraw {
 
     }
 
-    colorChange(color = '#000') {
-        b.color = color;
+    /**
+     *
+     * @param color
+     */
+    setColor(color) { _color = color;}
+    getColor() { return _color;}
+
+    /**
+     *
+     * @param size
+     */
+    setSize(size) { _size = size;}
+    getSize() { return _size;}
+
+
+    colorChange() {
+        _canvas.freeDrawingBrush.color = this.getColor();
     }
-    sizeChange(size = 7) {
-        b.width = size;
+    sizeChange() {
+        _canvas.freeDrawingBrush.width = this.getSize();
     }
 }
