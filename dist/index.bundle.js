@@ -29853,7 +29853,7 @@ fabric.util.object.extend(fabric.IText.prototype, /** @lends fabric.IText.protot
 
 let _canvas;
 let _color = '#000000';
-let _size = 7;
+let _size = 34;
 let _opacity = 100;
 
 class Brush {
@@ -32262,6 +32262,32 @@ module.exports = Array.isArray || function (arr) {
 let _id, _id2, _canvas, _menuCanvas;
 let _colorArr = ['#ff00c8', '#59ff00', '#ffa200', '#0073ff'];
 let _sizeArr = [5, 7, 10, 20, 30];
+
+let $ = function (id) {
+    return document.getElementById(id);
+};
+let brushEl = $('brush'),
+    airBrushEl = $('airBrush'),
+    crayonEl = $('crayon'),
+
+// fillEl = $('fill'),
+lineEl = $('line'),
+    screenToneEl = $('screenTone'),
+    eraserEl = $('eraser'),
+    textEl = $('text'),
+    zoomEl = $('zoom'),
+
+// moveEl = $('move'),
+clearEl = $('clear'),
+    colorEl = $('_color'),
+    sizeEl = $('_size'),
+    opacityEl = $('_opacity'),
+    zoomSlider = $('_zoom');
+
+// drawingModeEl = $('drawing-mode'),
+// drawingOptionsEl = $('drawing-mode-options'),
+// drawingColorEl = $('drawing-color'),
+// drawingLineWidthEl = $('drawing-line-width');
 class SketchBook {
     constructor(id, width, height, layer = 1) {
         _id = id;
@@ -32272,35 +32298,10 @@ class SketchBook {
         _canvas.selection = false;
 
         this._init();
+        this._default();
     }
 
     _init() {
-
-        let $ = function (id) {
-            return document.getElementById(id);
-        };
-        let brushEl = $('brush'),
-            airBrushEl = $('airBrush'),
-            crayonEl = $('crayon'),
-
-        // fillEl = $('fill'),
-        lineEl = $('line'),
-            screenToneEl = $('screenTone'),
-            eraserEl = $('eraser'),
-            textEl = $('text'),
-            zoomEl = $('zoom'),
-
-        // moveEl = $('move'),
-        clearEl = $('clear'),
-            colorEl = $('_color'),
-            sizeEl = $('_size'),
-            opacityEl = $('_opacity'),
-            zoomSlider = $('_zoom');
-
-        // drawingModeEl = $('drawing-mode'),
-        // drawingOptionsEl = $('drawing-mode-options'),
-        // drawingColorEl = $('drawing-color'),
-        // drawingLineWidthEl = $('drawing-line-width');
 
         zoomSlider.style.display = 'none';
         $('_zoomSpan').style.display = 'none';
@@ -32470,6 +32471,13 @@ class SketchBook {
               console.log(c);
               GameConfig.CURRENT_TOOL.sizeChange(c)
           }*/
+    }
+
+    _default() {
+        __WEBPACK_IMPORTED_MODULE_1__module_Brush__["a" /* default */].prototype.draw(_canvas);
+        colorEl.value = __WEBPACK_IMPORTED_MODULE_1__module_Brush__["a" /* default */].prototype.getColor();
+        sizeEl.value = __WEBPACK_IMPORTED_MODULE_1__module_Brush__["a" /* default */].prototype.getSize();
+        opacityEl.value = __WEBPACK_IMPORTED_MODULE_1__module_Brush__["a" /* default */].prototype.getOpacity();
     }
 
     _makePattern() {
@@ -32921,8 +32929,8 @@ class Eraser {
 
 
 const _defaultViewPort = 1;
-const _minimumViewPort = 100;
-const _maximumViewPort = 500;
+const _minimumViewPort = 50;
+const _maximumViewPort = 200;
 let _currentViewPort = 100;
 let _canvas;
 class Zoom {
@@ -32933,19 +32941,23 @@ class Zoom {
         __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__["a" /* default */].CURRENT_TOOL = this;
     }
     sizeChange() {
-        /*canvas.on('mouse:wheel', function(opt) {
-         var delta = opt.e.deltaY;
-         var zoom = canvas.getZoom();
-         zoom *= 0.999 ** delta;
-         if (zoom > 20) zoom = 20;
-         if (zoom < 0.01) zoom = 0.01;
-         canvas.setZoom(zoom);
-         opt.e.preventDefault();
-         opt.e.stopPropagation();
-        })*/
-        // _canvas.setZoom(this.getSize() * 0.01);
+
         _canvas.zoomToPoint({ x: _canvas.width / 2, y: _canvas.height / 2 }, this.getSize() * 0.01);
     }
+
+    sizeSetMouseWheel() {}
+    /*canvas.on('mouse:wheel', function(opt) {
+     var delta = opt.e.deltaY;
+     var zoom = canvas.getZoom();
+     zoom *= 0.999 ** delta;
+     if (zoom > 20) zoom = 20;
+     if (zoom < 0.01) zoom = 0.01;
+     canvas.setZoom(zoom);
+     opt.e.preventDefault();
+     opt.e.stopPropagation();
+    })*/
+    // _canvas.setZoom(this.getSize() * 0.01);
+
 
     /**
      *

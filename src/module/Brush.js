@@ -3,7 +3,7 @@ import {fabric} from "fabric";
 
 let _canvas;
 let _color = '#000000';
-let _size = 7;
+let _size = 34;
 let _opacity = 100;
 
 export default class Brush {

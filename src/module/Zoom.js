@@ -1,8 +1,8 @@
 import GameConfig from "../data/GameConfig";
 
 const _defaultViewPort = 1;
-const _minimumViewPort = 100;
-const _maximumViewPort = 500;
+const _minimumViewPort = 50;
+const _maximumViewPort = 200;
 let _currentViewPort = 100;
 let _canvas;
 export default class Zoom {
@@ -13,6 +13,11 @@ export default class Zoom {
         GameConfig.CURRENT_TOOL = this;
     }
     sizeChange() {
+
+        _canvas.zoomToPoint({ x: _canvas.width/2, y: _canvas.height/2 }, this.getSize() * 0.01);
+    }
+
+    sizeSetMouseWheel() {
         /*canvas.on('mouse:wheel', function(opt) {
          var delta = opt.e.deltaY;
          var zoom = canvas.getZoom();
@@ -24,7 +29,6 @@ export default class Zoom {
          opt.e.stopPropagation();
      })*/
         // _canvas.setZoom(this.getSize() * 0.01);
-        _canvas.zoomToPoint({ x: _canvas.width/2, y: _canvas.height/2 }, this.getSize() * 0.01);
     }
 
     /**

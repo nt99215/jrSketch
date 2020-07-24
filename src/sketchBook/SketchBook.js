@@ -12,6 +12,28 @@ import Zoom from "../module/Zoom";
 let _id, _id2, _canvas, _menuCanvas;
 let _colorArr = ['#ff00c8', '#59ff00', '#ffa200', '#0073ff'];
 let _sizeArr = [5,7,10,20,30];
+
+let $ = function(id){return document.getElementById(id)};
+let brushEl = $('brush'),
+    airBrushEl = $('airBrush'),
+    crayonEl = $('crayon'),
+    // fillEl = $('fill'),
+    lineEl = $('line'),
+    screenToneEl = $('screenTone'),
+    eraserEl = $('eraser'),
+    textEl = $('text'),
+    zoomEl= $('zoom'),
+    // moveEl = $('move'),
+    clearEl = $('clear'),
+    colorEl = $('_color'),
+    sizeEl = $('_size'),
+    opacityEl = $('_opacity'),
+    zoomSlider = $('_zoom');
+
+// drawingModeEl = $('drawing-mode'),
+// drawingOptionsEl = $('drawing-mode-options'),
+// drawingColorEl = $('drawing-color'),
+// drawingLineWidthEl = $('drawing-line-width');
 export default class SketchBook {
     constructor(id, width, height, layer = 1) {
         _id = id;
@@ -22,32 +44,13 @@ export default class SketchBook {
         _canvas.selection = false;
 
         this._init();
+        this._default();
+
     }
 
+
+
     _init() {
-
-
-        let $ = function(id){return document.getElementById(id)};
-        let brushEl = $('brush'),
-            airBrushEl = $('airBrush'),
-            crayonEl = $('crayon'),
-            // fillEl = $('fill'),
-            lineEl = $('line'),
-            screenToneEl = $('screenTone'),
-            eraserEl = $('eraser'),
-            textEl = $('text'),
-            zoomEl= $('zoom'),
-            // moveEl = $('move'),
-            clearEl = $('clear'),
-            colorEl = $('_color'),
-            sizeEl = $('_size'),
-            opacityEl = $('_opacity'),
-            zoomSlider = $('_zoom');
-
-            // drawingModeEl = $('drawing-mode'),
-            // drawingOptionsEl = $('drawing-mode-options'),
-            // drawingColorEl = $('drawing-color'),
-            // drawingLineWidthEl = $('drawing-line-width');
 
         zoomSlider.style.display = 'none';
         $('_zoomSpan').style.display ='none';
@@ -230,6 +233,13 @@ export default class SketchBook {
         }*/
 
 
+    }
+
+    _default() {
+        Brush.prototype.draw(_canvas);
+        colorEl.value = Brush.prototype.getColor();
+        sizeEl.value = Brush.prototype.getSize();
+        opacityEl.value = Brush.prototype.getOpacity();
     }
 
     _makePattern() {
