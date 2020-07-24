@@ -3,7 +3,7 @@ import {fabric} from "fabric";
 
 let b, _canvas, _isDown;
 export default class LineDraw {
-    constructor(canvas = null, type='circle', color = '#ff4400', size = 30, alpha = 1,
+    constructor(canvas = null, type='circle', color = '#000', size = 30, alpha = 1,
                 strokeLineCap = 'round', strokeLineJoin = 'round') {
 
     }
@@ -14,6 +14,7 @@ export default class LineDraw {
         _canvas.isDrawingMode = false;
         _canvas.selection = false;
         GameConfig.IS_LINE_DRAWING = true;
+        GameConfig.CURRENT_TOOL = null;
 
         _isDown = false;
         let line;

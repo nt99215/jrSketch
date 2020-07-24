@@ -29837,7 +29837,7 @@ fabric.util.object.extend(fabric.IText.prototype, /** @lends fabric.IText.protot
 
 let b, _canvas;
 class Brush {
-    constructor(canvas = null, type = 'circle', color = '#ff4400', size = 30, alpha = 1, strokeLineCap = 'round', strokeLineJoin = 'round') {
+    constructor(canvas = null, type = 'circle', color = '#000', size = 30, alpha = 1, strokeLineCap = 'round', strokeLineJoin = 'round') {
         // this.canvas = canvas;
         // this.color = color;
         // this.size = size;
@@ -29863,12 +29863,13 @@ class Brush {
         _canvas = canvas;
         _canvas.isDrawingMode = true;
         _canvas.freeDrawingBrush = new __WEBPACK_IMPORTED_MODULE_1_fabric__["fabric"].PencilBrush(_canvas);
-        _canvas.freeDrawingBrush.color = '#ff4400';
+        _canvas.freeDrawingBrush.color = '#000';
         _canvas.freeDrawingBrush.width = 40;
         _canvas.freeDrawingBrush.strokeLineCap = 'round';
         _canvas.freeDrawingBrush.strokeLineJoin = 'round';
 
         __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__["a" /* default */].IS_LINE_DRAWING = false;
+        __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__["a" /* default */].CURRENT_TOOL = _canvas.freeDrawingBrush;
     }
 
     colorChange(color = '#000') {
@@ -32239,19 +32240,22 @@ class SketchBook {
         let $ = function (id) {
             return document.getElementById(id);
         };
-        let brush = $('brush'),
-            airBrush = $('airBrush'),
-            crayon = $('crayon'),
+        let brushEl = $('brush'),
+            airBrushEl = $('airBrush'),
+            crayonEl = $('crayon'),
 
-        // fill = $('fill'),
-        line = $('line'),
-            screenTone = $('screenTone'),
-            eraser = $('eraser'),
-            text = $('text'),
-            zoom = $('zoom'),
+        // fillEl = $('fill'),
+        lineEl = $('line'),
+            screenToneEl = $('screenTone'),
+            eraserEl = $('eraser'),
+            textEl = $('text'),
+            zoomEl = $('zoom'),
 
-        // move = $('move'),
-        clearEl = $('clear');
+        // moveEl = $('move'),
+        clearEl = $('clear'),
+            colorEl = $('_color'),
+            sizeEl = $('_size'),
+            opacityEl = $('_opacity');
 
         // drawingModeEl = $('drawing-mode'),
         // drawingOptionsEl = $('drawing-mode-options'),
@@ -32259,33 +32263,48 @@ class SketchBook {
         // drawingLineWidthEl = $('drawing-line-width');
 
 
-        brush.onclick = () => {
+        colorEl.onchange = function () {
+            console.log(this.value);
+            if (__WEBPACK_IMPORTED_MODULE_2__data_GameConfig__["a" /* default */].CURRENT_TOOL) __WEBPACK_IMPORTED_MODULE_2__data_GameConfig__["a" /* default */].CURRENT_TOOL.color = this.value;
+        };
+
+        opacityEl.onchange = function () {
+            console.log(this.value);
+            // GameConfig.CURRENT_TOOL.width = this.value;
+        };
+
+        sizeEl.onchange = function () {
+            console.log(this.value);
+            if (__WEBPACK_IMPORTED_MODULE_2__data_GameConfig__["a" /* default */].CURRENT_TOOL) __WEBPACK_IMPORTED_MODULE_2__data_GameConfig__["a" /* default */].CURRENT_TOOL.width = this.value;
+        };
+
+        brushEl.onclick = () => {
 
             __WEBPACK_IMPORTED_MODULE_1__module_Brush__["a" /* default */].prototype.draw(_canvas);
         };
 
-        airBrush.onclick = () => {
+        airBrushEl.onclick = () => {
 
             __WEBPACK_IMPORTED_MODULE_5__module_Airbrush__["a" /* default */].prototype.draw(_canvas);
         };
 
-        crayon.onclick = () => {
+        crayonEl.onclick = () => {
 
             __WEBPACK_IMPORTED_MODULE_6__module_Crayon__["a" /* default */].prototype.draw(_canvas);
         };
 
-        line.onclick = () => {
+        lineEl.onclick = () => {
 
             __WEBPACK_IMPORTED_MODULE_7__module_LineDraw__["a" /* default */].prototype.draw(_canvas);
         };
 
-        /* screenTone.onclick =()=> {
+        /* screenToneEl.onclick =()=> {
                // _canvas.freeDrawingBrush = new fabric.PatternBrush(_canvas);
              _canvas.freeDrawingBrush = this._makePattern();
              // this._makePattern();
          }*/
 
-        eraser.onclick = () => {
+        eraserEl.onclick = () => {
 
             __WEBPACK_IMPORTED_MODULE_8__module_Eraser__["a" /* default */].prototype.draw(_canvas);
         };
@@ -32294,7 +32313,7 @@ class SketchBook {
             _canvas.clear();
         };
 
-        /*move.onclick =()=> {
+        /*moveEl.onclick =()=> {
             _canvas.isDrawingMode = !_canvas.isDrawingMode;
             if (_canvas.isDrawingMode) move.innerHTML = 'move';
             else move.innerHTML = 'draw';
@@ -32332,10 +32351,7 @@ class SketchBook {
 
     _makePattern() {
         let diamondPatternBrush = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].PatternBrush(_canvas);
-        console.log('aaa');
         diamondPatternBrush.getPatternSrc = function () {
-            console.log(diamondPatternBrush);
-            console.log('bbb');
 
             let squareWidth = 10,
                 squareDistance = 5;
@@ -32362,6 +32378,24 @@ class SketchBook {
 
     _clearCanvas(canvas) {
         let a = new __WEBPACK_IMPORTED_MODULE_3__module_ClearCanvas__["a" /* default */](canvas);
+        this.hexToRgb("ffcc00");
+    }
+
+    rgbToHex(r, g, b) {
+
+        let rgbToHex = (r, g, b) => '#' + [r, g, b].map(x => {
+            const hex = x.toString(16);
+            return hex.length === 1 ? '0' + hex : hex;
+        }).join('');
+
+        console.log(rgbToHex);
+    }
+
+    hexToRgb(hex) {
+        console.log("A");
+        hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, (m, r, g, b) => '#' + r + r + g + g + b + b).substring(1).match(/.{2}/g).map(x => parseInt(x, 16));
+
+        console.log(hex);
     }
 
 }
@@ -32486,7 +32520,7 @@ class MainMenu {
 
 let b, _canvas;
 class Airbrush {
-    constructor(canvas = null, type = 'circle', color = '#ff4400', size = 30, alpha = 1, strokeLineCap = 'round', strokeLineJoin = 'round') {
+    constructor(canvas = null, type = 'circle', color = '#000', size = 30, alpha = 1, strokeLineCap = 'round', strokeLineJoin = 'round') {
         // this.canvas = canvas;
         // this.color = color;
         // this.size = size;
@@ -32521,6 +32555,7 @@ class Airbrush {
         _canvas.freeDrawingBrush.optimizeOverlapping = true;
 
         __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__["a" /* default */].IS_LINE_DRAWING = false;
+        __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__["a" /* default */].CURRENT_TOOL = _canvas.freeDrawingBrush;
     }
 
     colorChange(color = '#000') {
@@ -32546,7 +32581,7 @@ class Airbrush {
 
 let b, _canvas;
 class Crayon {
-    constructor(canvas = null, type = 'circle', color = '#ff4400', size = 30, alpha = 1, strokeLineCap = 'round', strokeLineJoin = 'round') {
+    constructor(canvas = null, type = 'circle', color = '#000', size = 30, alpha = 1, strokeLineCap = 'round', strokeLineJoin = 'round') {
         // this.canvas = canvas;
         // this.color = color;
         // this.size = size;
@@ -32581,6 +32616,7 @@ class Crayon {
         _canvas.freeDrawingBrush.optimizeOverlapping = true;
 
         __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__["a" /* default */].IS_LINE_DRAWING = false;
+        __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__["a" /* default */].CURRENT_TOOL = _canvas.freeDrawingBrush;
     }
 
     colorChange(color = '#000') {
@@ -32606,13 +32642,14 @@ class Crayon {
 
 let b, _canvas, _isDown;
 class LineDraw {
-    constructor(canvas = null, type = 'circle', color = '#ff4400', size = 30, alpha = 1, strokeLineCap = 'round', strokeLineJoin = 'round') {}
+    constructor(canvas = null, type = 'circle', color = '#000', size = 30, alpha = 1, strokeLineCap = 'round', strokeLineJoin = 'round') {}
 
     draw(canvas) {
         _canvas = canvas;
         _canvas.isDrawingMode = false;
         _canvas.selection = false;
         __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__["a" /* default */].IS_LINE_DRAWING = true;
+        __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__["a" /* default */].CURRENT_TOOL = null;
 
         _isDown = false;
         let line;
@@ -32703,6 +32740,7 @@ class Eraser {
         _canvas.freeDrawingBrush.strokeLineJoin = 'round';
 
         __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__["a" /* default */].IS_LINE_DRAWING = false;
+        __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__["a" /* default */].CURRENT_TOOL = _canvas.freeDrawingBrush;
     }
 
     colorChange(color = '#000') {

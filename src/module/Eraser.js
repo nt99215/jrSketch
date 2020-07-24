@@ -36,6 +36,7 @@ export default class Eraser {
         _canvas.freeDrawingBrush.strokeLineJoin = 'round';
 
         GameConfig.IS_LINE_DRAWING = false;
+        GameConfig.CURRENT_TOOL = _canvas.freeDrawingBrush;
     }
 
     colorChange(color = '#000') {

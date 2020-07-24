@@ -25,17 +25,20 @@ export default class SketchBook {
 
 
         let $ = function(id){return document.getElementById(id)};
-        let brush = $('brush'),
-            airBrush = $('airBrush'),
-            crayon = $('crayon'),
-            // fill = $('fill'),
-            line = $('line'),
-            screenTone = $('screenTone'),
-            eraser = $('eraser'),
-            text = $('text'),
-            zoom = $('zoom'),
-            // move = $('move'),
-            clearEl = $('clear');
+        let brushEl = $('brush'),
+            airBrushEl = $('airBrush'),
+            crayonEl = $('crayon'),
+            // fillEl = $('fill'),
+            lineEl = $('line'),
+            screenToneEl = $('screenTone'),
+            eraserEl = $('eraser'),
+            textEl = $('text'),
+            zoomEl= $('zoom'),
+            // moveEl = $('move'),
+            clearEl = $('clear'),
+            colorEl = $('_color'),
+            sizeEl = $('_size'),
+            opacityEl = $('_opacity');
 
             // drawingModeEl = $('drawing-mode'),
             // drawingOptionsEl = $('drawing-mode-options'),
@@ -43,34 +46,49 @@ export default class SketchBook {
             // drawingLineWidthEl = $('drawing-line-width');
 
 
-        brush.onclick =()=> {
+        colorEl.onchange = function() {
+            console.log(this.value);
+            if(GameConfig.CURRENT_TOOL) GameConfig.CURRENT_TOOL.color = this.value;
+        }
+
+        opacityEl.onchange = function() {
+            console.log(this.value);
+            // GameConfig.CURRENT_TOOL.width = this.value;
+        }
+
+        sizeEl.onchange = function() {
+            console.log(this.value);
+            if(GameConfig.CURRENT_TOOL) GameConfig.CURRENT_TOOL.width = this.value;
+        }
+
+        brushEl.onclick =()=> {
 
             Brush.prototype.draw(_canvas);
         }
 
-        airBrush.onclick =()=> {
+        airBrushEl.onclick =()=> {
 
             Airbrush.prototype.draw(_canvas);
         }
 
-        crayon.onclick =()=> {
+        crayonEl.onclick =()=> {
 
             Crayon.prototype.draw(_canvas);
         }
 
-        line.onclick =()=> {
+        lineEl.onclick =()=> {
 
             LineDraw.prototype.draw(_canvas);
         }
 
-       /* screenTone.onclick =()=> {
+       /* screenToneEl.onclick =()=> {
 
             // _canvas.freeDrawingBrush = new fabric.PatternBrush(_canvas);
             _canvas.freeDrawingBrush = this._makePattern();
             // this._makePattern();
         }*/
 
-        eraser.onclick =()=> {
+        eraserEl.onclick =()=> {
 
             Eraser.prototype.draw(_canvas);
         };
@@ -79,7 +97,7 @@ export default class SketchBook {
             _canvas.clear()
         };
 
-        /*move.onclick =()=> {
+        /*moveEl.onclick =()=> {
             _canvas.isDrawingMode = !_canvas.isDrawingMode;
             if (_canvas.isDrawingMode) move.innerHTML = 'move';
             else move.innerHTML = 'draw';
@@ -102,8 +120,6 @@ export default class SketchBook {
 
         }*/
 
-
-
       /*  drawingColorEl.onclick =()=> {
             // this.defaultTool.colorChange();
             let n = parseInt(Math.random() * _colorArr.length);
@@ -125,10 +141,7 @@ export default class SketchBook {
 
     _makePattern() {
         let diamondPatternBrush = new fabric.PatternBrush(_canvas);
-        console.log('aaa');
         diamondPatternBrush.getPatternSrc = function() {
-            console.log(diamondPatternBrush);
-            console.log('bbb');
 
             let squareWidth = 10, squareDistance = 5;
             let patternCanvas = fabric.document.createElement('canvas');
@@ -154,9 +167,29 @@ export default class SketchBook {
 
     _clearCanvas(canvas) {
         let a = new ClearCanvas(canvas);
+        this.hexToRgb("ffcc00")
 
     }
 
+    rgbToHex(r,g,b) {
+
+        let rgbToHex = (r, g, b) => '#' + [r, g, b].map(x => {
+            const hex = x.toString(16)
+            return hex.length === 1 ? '0' + hex : hex
+        }).join('');
+
+        console.log(rgbToHex)
+    }
+
+    hexToRgb(hex) {
+        console.log("A")
+        hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i
+            ,(m, r, g, b) => '#' + r + r + g + g + b + b)
+            .substring(1).match(/.{2}/g)
+            .map(x => parseInt(x, 16))
+
+        console.log(hex);
+    }
 
 
 }

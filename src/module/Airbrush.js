@@ -3,7 +3,7 @@ import {fabric} from "fabric";
 
 let b, _canvas;
 export default class Airbrush {
-    constructor(canvas = null, type='circle', color = '#ff4400', size = 30, alpha = 1,
+    constructor(canvas = null, type='circle', color = '#000', size = 30, alpha = 1,
                 strokeLineCap = 'round', strokeLineJoin = 'round') {
         // this.canvas = canvas;
         // this.color = color;
@@ -39,6 +39,7 @@ export default class Airbrush {
         _canvas.freeDrawingBrush.optimizeOverlapping = true;
 
         GameConfig.IS_LINE_DRAWING = false;
+        GameConfig.CURRENT_TOOL = _canvas.freeDrawingBrush;
     }
 
     colorChange(color = '#000') {
