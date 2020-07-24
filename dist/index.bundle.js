@@ -32247,6 +32247,8 @@ module.exports = Array.isArray || function (arr) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__module_Crayon__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__module_LineDraw__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__module_Eraser__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__module_Zoom__ = __webpack_require__(19);
+
 
 
 
@@ -32266,6 +32268,8 @@ class SketchBook {
         _canvas = new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].Canvas(_id, {
             // isDrawingMode: true
         });
+
+        _canvas.selection = false;
 
         this._init();
     }
@@ -32290,13 +32294,16 @@ class SketchBook {
         clearEl = $('clear'),
             colorEl = $('_color'),
             sizeEl = $('_size'),
-            opacityEl = $('_opacity');
+            opacityEl = $('_opacity'),
+            zoomSlider = $('_zoom');
 
         // drawingModeEl = $('drawing-mode'),
         // drawingOptionsEl = $('drawing-mode-options'),
         // drawingColorEl = $('drawing-color'),
         // drawingLineWidthEl = $('drawing-line-width');
 
+        zoomSlider.style.display = 'none';
+        $('_zoomSpan').style.display = 'none';
 
         colorEl.onchange = function () {
             if (__WEBPACK_IMPORTED_MODULE_2__data_GameConfig__["a" /* default */].CURRENT_TOOL) {
@@ -32319,6 +32326,17 @@ class SketchBook {
             }
         };
 
+        zoomSlider.onchange = function () {
+            if (__WEBPACK_IMPORTED_MODULE_2__data_GameConfig__["a" /* default */].CURRENT_TOOL) {
+                __WEBPACK_IMPORTED_MODULE_2__data_GameConfig__["a" /* default */].CURRENT_TOOL.setSize(this.value);
+                __WEBPACK_IMPORTED_MODULE_2__data_GameConfig__["a" /* default */].CURRENT_TOOL.sizeChange();
+            }
+        };
+
+        /**
+         * TOOLS
+         */
+
         brushEl.onclick = () => {
 
             __WEBPACK_IMPORTED_MODULE_1__module_Brush__["a" /* default */].prototype.draw(_canvas);
@@ -32327,8 +32345,12 @@ class SketchBook {
             opacityEl.value = __WEBPACK_IMPORTED_MODULE_1__module_Brush__["a" /* default */].prototype.getOpacity();
             colorEl.style.display = '';
             $('_colorSpan').style.display = '';
+            sizeEl.style.display = '';
+            $('_sizeSpan').style.display = '';
             opacityEl.style.display = '';
             $('_opacitySpan').style.display = '';
+            zoomSlider.style.display = 'none';
+            $('_zoomSpan').style.display = 'none';
         };
 
         airBrushEl.onclick = () => {
@@ -32338,8 +32360,12 @@ class SketchBook {
             sizeEl.value = __WEBPACK_IMPORTED_MODULE_5__module_Airbrush__["a" /* default */].prototype.getSize();
             colorEl.style.display = '';
             $('_colorSpan').style.display = '';
+            sizeEl.style.display = '';
+            $('_sizeSpan').style.display = '';
             opacityEl.style.display = 'none';
             $('_opacitySpan').style.display = 'none';
+            zoomSlider.style.display = 'none';
+            $('_zoomSpan').style.display = 'none';
         };
 
         crayonEl.onclick = () => {
@@ -32349,8 +32375,12 @@ class SketchBook {
             sizeEl.value = __WEBPACK_IMPORTED_MODULE_6__module_Crayon__["a" /* default */].prototype.getSize();
             colorEl.style.display = '';
             $('_colorSpan').style.display = '';
+            sizeEl.style.display = '';
+            $('_sizeSpan').style.display = '';
             opacityEl.style.display = 'none';
             $('_opacitySpan').style.display = 'none';
+            zoomSlider.style.display = 'none';
+            $('_zoomSpan').style.display = 'none';
         };
 
         lineEl.onclick = () => {
@@ -32360,8 +32390,12 @@ class SketchBook {
             sizeEl.value = __WEBPACK_IMPORTED_MODULE_7__module_LineDraw__["a" /* default */].prototype.getSize();
             colorEl.style.display = '';
             $('_colorSpan').style.display = '';
+            sizeEl.style.display = '';
+            $('_sizeSpan').style.display = '';
             opacityEl.style.display = 'none';
             $('_opacitySpan').style.display = 'none';
+            zoomSlider.style.display = 'none';
+            $('_zoomSpan').style.display = 'none';
         };
 
         /* screenToneEl.onclick =()=> {
@@ -32376,12 +32410,30 @@ class SketchBook {
             sizeEl.value = __WEBPACK_IMPORTED_MODULE_6__module_Crayon__["a" /* default */].prototype.getSize();
             colorEl.style.display = 'none';
             $('_colorSpan').style.display = 'none';
+            sizeEl.style.display = '';
+            $('_sizeSpan').style.display = '';
             opacityEl.style.display = 'none';
             $('_opacitySpan').style.display = 'none';
+            zoomSlider.style.display = 'none';
+            $('_zoomSpan').style.display = 'none';
+        };
+
+        zoomEl.onclick = () => {
+            __WEBPACK_IMPORTED_MODULE_9__module_Zoom__["a" /* default */].prototype.init(_canvas);
+            zoomSlider.value = __WEBPACK_IMPORTED_MODULE_9__module_Zoom__["a" /* default */].prototype.getSize();
+            colorEl.style.display = 'none';
+            $('_colorSpan').style.display = 'none';
+            sizeEl.style.display = 'none';
+            $('_sizeSpan').style.display = 'none';
+            opacityEl.style.display = 'none';
+            $('_opacitySpan').style.display = 'none';
+
+            zoomSlider.style.display = '';
+            $('_zoomSpan').style.display = '';
         };
 
         clearEl.onclick = () => {
-            _canvas.clear();
+            __WEBPACK_IMPORTED_MODULE_3__module_ClearCanvas__["a" /* default */].prototype.canvasClear(_canvas);
         };
 
         /*moveEl.onclick =()=> {
@@ -32479,7 +32531,8 @@ class SketchBook {
 
 "use strict";
 class ClearCanvas {
-    constructor(canvas) {
+    canvasClear(canvas) {
+        // alert("are you sure?");
         canvas.clear();
     }
 
@@ -32736,7 +32789,7 @@ class LineDraw {
         let line;
         _canvas.on('mouse:down', function (o) {
             if (__WEBPACK_IMPORTED_MODULE_0__data_GameConfig__["a" /* default */].IS_LINE_DRAWING) {
-                // _canvas.selection = false;
+                _canvas.selection = false;
                 _isDown = true;
                 let pointer = _canvas.getPointer(o.e);
                 let points = [pointer.x, pointer.y, pointer.x, pointer.y];
@@ -32857,6 +32910,57 @@ class Eraser {
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Eraser;
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__ = __webpack_require__(0);
+
+
+const _defaultViewPort = 1;
+const _minimumViewPort = 100;
+const _maximumViewPort = 500;
+let _currentViewPort = 100;
+let _canvas;
+class Zoom {
+
+    init(canvas) {
+        _canvas = canvas;
+        _canvas.isDrawingMode = true;
+        __WEBPACK_IMPORTED_MODULE_0__data_GameConfig__["a" /* default */].CURRENT_TOOL = this;
+    }
+    sizeChange() {
+        /*canvas.on('mouse:wheel', function(opt) {
+         var delta = opt.e.deltaY;
+         var zoom = canvas.getZoom();
+         zoom *= 0.999 ** delta;
+         if (zoom > 20) zoom = 20;
+         if (zoom < 0.01) zoom = 0.01;
+         canvas.setZoom(zoom);
+         opt.e.preventDefault();
+         opt.e.stopPropagation();
+        })*/
+        // _canvas.setZoom(this.getSize() * 0.01);
+        _canvas.zoomToPoint({ x: _canvas.width / 2, y: _canvas.height / 2 }, this.getSize() * 0.01);
+    }
+
+    /**
+     *
+     * @param size
+     */
+    setSize(point) {
+        console.log(point);
+        if (_currentViewPort >= _minimumViewPort && _currentViewPort <= _maximumViewPort) _currentViewPort = point;
+    }
+    getSize() {
+        return _currentViewPort;
+    }
+
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Zoom;
 
 
 /***/ })

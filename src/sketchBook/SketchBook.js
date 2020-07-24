@@ -7,6 +7,7 @@ import Airbrush from "../module/Airbrush";
 import Crayon from "../module/Crayon";
 import LineDraw from "../module/LineDraw";
 import Eraser from "../module/Eraser";
+import Zoom from "../module/Zoom";
 
 let _id, _id2, _canvas, _menuCanvas;
 let _colorArr = ['#ff00c8', '#59ff00', '#ffa200', '#0073ff'];
@@ -17,6 +18,8 @@ export default class SketchBook {
         _canvas = new fabric.Canvas(_id, {
             // isDrawingMode: true
         });
+
+        _canvas.selection = false;
 
         this._init();
     }
@@ -38,12 +41,16 @@ export default class SketchBook {
             clearEl = $('clear'),
             colorEl = $('_color'),
             sizeEl = $('_size'),
-            opacityEl = $('_opacity');
+            opacityEl = $('_opacity'),
+            zoomSlider = $('_zoom');
 
             // drawingModeEl = $('drawing-mode'),
             // drawingOptionsEl = $('drawing-mode-options'),
             // drawingColorEl = $('drawing-color'),
             // drawingLineWidthEl = $('drawing-line-width');
+
+        zoomSlider.style.display = 'none';
+        $('_zoomSpan').style.display ='none';
 
 
         colorEl.onchange = function() {
@@ -70,6 +77,19 @@ export default class SketchBook {
             }
         }
 
+        zoomSlider.onchange = function() {
+            if(GameConfig.CURRENT_TOOL)
+            {
+                GameConfig.CURRENT_TOOL.setSize(this.value);
+                GameConfig.CURRENT_TOOL.sizeChange();
+            }
+        }
+
+
+        /**
+         * TOOLS
+         */
+
         brushEl.onclick =()=> {
 
             Brush.prototype.draw(_canvas);
@@ -78,8 +98,12 @@ export default class SketchBook {
             opacityEl.value = Brush.prototype.getOpacity();
             colorEl.style.display = '';
             $('_colorSpan').style.display = '';
+            sizeEl.style.display = '';
+            $('_sizeSpan').style.display = '';
             opacityEl.style.display = '';
             $('_opacitySpan').style.display = '';
+            zoomSlider.style.display = 'none';
+            $('_zoomSpan').style.display ='none';
         }
 
         airBrushEl.onclick =()=> {
@@ -89,8 +113,12 @@ export default class SketchBook {
             sizeEl.value = Airbrush.prototype.getSize();
             colorEl.style.display = '';
             $('_colorSpan').style.display = '';
+            sizeEl.style.display = '';
+            $('_sizeSpan').style.display = '';
             opacityEl.style.display = 'none';
             $('_opacitySpan').style.display = 'none';
+            zoomSlider.style.display = 'none';
+            $('_zoomSpan').style.display ='none';
         }
 
         crayonEl.onclick =()=> {
@@ -100,8 +128,12 @@ export default class SketchBook {
             sizeEl.value = Crayon.prototype.getSize();
             colorEl.style.display = '';
             $('_colorSpan').style.display = '';
+            sizeEl.style.display = '';
+            $('_sizeSpan').style.display = '';
             opacityEl.style.display = 'none';
             $('_opacitySpan').style.display = 'none';
+            zoomSlider.style.display = 'none';
+            $('_zoomSpan').style.display ='none';
         }
 
         lineEl.onclick =()=> {
@@ -111,8 +143,12 @@ export default class SketchBook {
             sizeEl.value = LineDraw.prototype.getSize();
             colorEl.style.display = '';
             $('_colorSpan').style.display = '';
+            sizeEl.style.display = '';
+            $('_sizeSpan').style.display = '';
             opacityEl.style.display = 'none';
             $('_opacitySpan').style.display = 'none';
+            zoomSlider.style.display = 'none';
+            $('_zoomSpan').style.display ='none';
         }
 
        /* screenToneEl.onclick =()=> {
@@ -128,12 +164,31 @@ export default class SketchBook {
             sizeEl.value = Crayon.prototype.getSize();
             colorEl.style.display = 'none';
             $('_colorSpan').style.display = 'none';
+            sizeEl.style.display = '';
+            $('_sizeSpan').style.display = '';
             opacityEl.style.display = 'none';
             $('_opacitySpan').style.display = 'none';
+            zoomSlider.style.display = 'none';
+            $('_zoomSpan').style.display ='none';
         };
 
+        zoomEl.onclick =()=> {
+            Zoom.prototype.init(_canvas);
+            zoomSlider.value = Zoom.prototype.getSize();
+            colorEl.style.display = 'none';
+            $('_colorSpan').style.display = 'none';
+            sizeEl.style.display = 'none';
+            $('_sizeSpan').style.display = 'none';
+            opacityEl.style.display = 'none';
+            $('_opacitySpan').style.display = 'none';
+
+            zoomSlider.style.display = '';
+            $('_zoomSpan').style.display = '';
+
+        }
+
         clearEl.onclick = ()=> {
-            _canvas.clear();
+            ClearCanvas.prototype.canvasClear(_canvas);
         };
 
         /*moveEl.onclick =()=> {
@@ -176,7 +231,6 @@ export default class SketchBook {
 
 
     }
-
 
     _makePattern() {
         let diamondPatternBrush = new fabric.PatternBrush(_canvas);

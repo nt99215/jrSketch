@@ -1,5 +1,6 @@
 export default class ClearCanvas {
-    constructor(canvas) {
+    canvasClear(canvas) {
+        // alert("are you sure?");
         canvas.clear();
     }
 

@@ -20,7 +20,7 @@ export default class LineDraw {
         let line;
         _canvas.on('mouse:down', function (o) {
             if (GameConfig.IS_LINE_DRAWING) {
-                // _canvas.selection = false;
+                _canvas.selection = false;
                 _isDown = true;
                 let pointer = _canvas.getPointer(o.e);
                 let points = [pointer.x, pointer.y, pointer.x, pointer.y];
